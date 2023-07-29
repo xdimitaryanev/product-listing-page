@@ -49,6 +49,7 @@ const categoryEl = document.querySelector(".main-category")
 
 //* FUNCTION create product *//
 function createProduct(i,arr) {
+  
   //get product
   const product = arr[i];
   loadedProducts++;
