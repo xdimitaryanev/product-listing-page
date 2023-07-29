@@ -16,6 +16,7 @@ function loadCategories(arr) {
   }
   for (let i = 0; i < chosenCategoriesArr.length; i++) {
     const menuEl = document.createElement("a");
+    // menuEl.addEventListener("click", loadProducts(chosenCategoriesArr[i]));
     menuEl.textContent = arr[i];
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
@@ -27,9 +28,9 @@ function loadCategories(arr) {
 
 
 //fetch products//
-async function fetchProducts() {
+async function fetchProducts(category) {
   try {
-    const response = await fetch("data/shoes.json");
+    const response = await fetch(`data/${category}.json`);
     return await response.json();
   } catch (err) {
     console.error("Error fetching products:", err);
@@ -38,27 +39,28 @@ async function fetchProducts() {
 }
 
 //declare variables//
-let productsArr = await fetchProducts();
-let allProducts = productsArr.length;
+const productGrid = document.querySelector(".main-products");
+// let productsArr = await fetchProducts("eyeliner");
+// let allProducts = productsArr.length;
 let loadedProducts = 0;
 
-//create product//
-function createProduct(i) {
+//* FUNCTION create product *//
+function createProduct(i,arr) {
   //get product
-  const product = productsArr[i];
+  const product = arr[i];
   loadedProducts++;
 
   //create wrapper for the product
   const el = document.createElement("div");
   el.classList.add("product-wrapper");
-  const productGrid = document.querySelector(".main-products");
+  
   productGrid.append(el);
 
   //create elements for the product//
 
   //img
   const productImg = document.createElement("img");
-  productImg.src = product.imageURL;
+  productImg.src = product.image_link;
   productImg.classList.add("main-img");
   //name
   const productName = document.createElement("h3");
@@ -71,13 +73,13 @@ function createProduct(i) {
   priceWrapper.classList.add("main-price-wrapper");
   const productPrice = document.createElement("span");
   productPrice.textContent = `Price: ${product.price}$`;
-  if (product.discount > 0) {
-    const discountedPriceProduct = document.createElement("span");
-    const discountedPriceProductValue = product.price - (product.discount * product.price / 100);
-    discountedPriceProduct.textContent = `NOW ${product.discount}% OFF ${discountedPriceProductValue}$`;
-    productPrice.classList.add("main-product-discounted");
-    priceWrapper.append(productPrice, discountedPriceProduct);
-  }
+  // if (product.discount > 0) {
+  //   const discountedPriceProduct = document.createElement("span");
+  //   const discountedPriceProductValue = product.price - (product.discount * product.price / 100);
+  //   discountedPriceProduct.textContent = `NOW ${product.discount}% OFF ${discountedPriceProductValue}$`;
+  //   productPrice.classList.add("main-product-discounted");
+  //   priceWrapper.append(productPrice, discountedPriceProduct);
+  // }
   
   //rating
   const productRating = document.createElement("span");
@@ -96,42 +98,64 @@ function createProduct(i) {
     productRating,
     addToCart
   );
+
 }
 
-// * load products on 1st page load * //
-function loadProducts() {
+//* load products on 1st page load * //
+async function loadProducts(category) {
+ const arr = await fetchProducts(category);
+ const allProducts = arr.length
+console.log(arr.length)
+
   if (allProducts >= 20) {
     endIndex = 20;
   } else {
     endIndex = allProducts;
   }
   for (let i = 0; i < endIndex; i++) {
-    createProduct(i);
+    createProduct(i,arr);
   }
+
+  const addMoreBtn = document.createElement("button");
+  addMoreBtn.classList.add("main-btn");
+  addMoreBtn.textContent = "click"
+  const mainEl = document.querySelector(".main")
+  mainEl.append(addMoreBtn)
+  addMoreBtn.addEventListener("click", (e) => {
+    if (allProducts - loadedProducts === 0) {
+      e.target.style.color = "red";
+      return;
+    } else if (allProducts - loadedProducts < 20) {
+      startIndex = loadedProducts;
+      endIndex = allProducts;
+    } else if (allProducts - loadedProducts >= 20) {
+      endIndex += 20;
+      startIndex = loadedProducts;
+    }
+    for (let i = startIndex; i < endIndex; i++) {
+      createProduct(i,arr);
+    }
+
+  });  
 }
 
-function addToCart() {
-  return alert("added");
-}
 
-function loadMoreProducts(e) {
-  if (allProducts - loadedProducts === 0) {
-    e.target.style.color = "red";
-    return;
-  } else if (allProducts - loadedProducts < 20) {
-    startIndex = loadedProducts;
-    endIndex = allProducts;
-  } else if (allProducts - loadedProducts >= 20) {
-    endIndex += 20;
-    startIndex = loadedProducts;
-  }
-  for (let i = startIndex; i < endIndex; i++) {
-    createProduct(i);
-  }
-}
 
-window.onload = loadProducts();
-window.onload = loadCategories(["watches", "shoes", "tops", "bags"]);
+// function resetProductGrid() {
+//   while (productGrid.firstChild) {
+//     productGrid.removeChild(productGrid.firstChild);
+//   }
+// }
 
-const addMoreBtn = document.querySelector(".main-btn");
-addMoreBtn.addEventListener("click", loadMoreProducts);
+
+
+// function addToCart() {
+//   return alert("added");
+// }
+
+
+
+window.onload = loadProducts("lipliner");
+window.onload = loadCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
+
+
