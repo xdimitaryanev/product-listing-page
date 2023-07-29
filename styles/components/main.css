@@ -15,15 +15,25 @@
 }
 
 .main-header-wrapper {
-    margin-top: 1em;
+    margin-top: 4em;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid black;
+    
 }
 
-.main-products-wrapper {
+.main-products-wrapper {    
     display: flex;
+    margin-top: 4em;
+}
+
+.main-product-name {
+    font-family: Oswald,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin: 0.5em 0;
 }
 
 .main-filter {
@@ -60,11 +70,13 @@
 .main-product-description {
     font-family: Montserrat sans-serif;
     font-weight: 500;
-    font-size: var(--size-sm);
+    font-size: var(--size-base);
+    line-height: 90%;
     max-height: 220px;
     text-align: center;
     overflow:hidden;
     text-overflow:ellipsis;  
+    margin: 1em 1em;
 }
 
 
@@ -72,26 +84,11 @@
     color: var(--clr-pink400);
     text-decoration: line-through;
 }
+
 .main-product-discounted p {
     text-decoration: none;
     color: black;
 
-}
-
-.main-img {
-    width: 80%;
-    border-radius: 1em;
-    margin-bottom: 1em;
-}
-
-.card {
-    height: 2em;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.card:hover {
-    transform: translateY(-1px);
 }
 
 .main-price-wrapper {
@@ -100,6 +97,52 @@
     justify-content: center;
     align-items: center;
 }
-.main-btn{
-    color:black;
+
+.main-img-wrapper {
+    display: grid;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    transition: all 0.3s ease;
 }
+
+.main-img-wrapper:hover .main-img {
+filter:blur(2px);
+}
+
+.main-img {
+    width: 80%;
+    border-radius: 1em;
+    margin-bottom: 1em;
+    grid-row: 1/2;
+    grid-column: 1/2;
+    transition: all 0.5s ease;
+}
+
+.main-add-to-cart-btn {
+    text-align: center;
+    font-family: Oswald, sans-serif;
+    font-size: var(--size-sm);
+    opacity: 0;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    grid-row: 1/2;
+    grid-column: 1/2;
+
+    color: var(--clr-dark);
+    padding: 0.5em 0.5em;
+    background-color: rgba(138, 138, 138, 0.707);
+    border-radius: 0.1em;
+    transform: translateY(-20px);
+
+  }
+  
+  .main-img-wrapper:hover .main-add-to-cart-btn {
+    opacity: 1;
+    transform: translateY(0px);
+    
+  }
+
+  

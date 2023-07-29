@@ -62,11 +62,15 @@ function createProduct(i,arr) {
   //create elements for the product//
 
   //img
+  const imgWrapper = document.createElement("div");
+  imgWrapper.classList.add("main-img-wrapper")
   const productImg = document.createElement("img");
+  imgWrapper.append(productImg);
   productImg.src = product.image_link;
   productImg.classList.add("main-img");
   //name
   const productName = document.createElement("h3");
+  productName.classList.add("main-product-name")
   productName.textContent = product.name;
 
   //description
@@ -96,18 +100,20 @@ function createProduct(i,arr) {
   }
 
   //cart
-  const addToCart = document.createElement("img");
-  addToCart.src = `cart.png`;
-  addToCart.classList.add("card");
+  const addToCart = document.createElement("button");
+  addToCart.textContent = "add to basket"
+  addToCart.classList.add("main-add-to-cart-btn");
   addToCart.addEventListener("click", addToCart);
+  imgWrapper.append(addToCart)
   //add elements to the product wrapper
   el.append(
-    productImg,
+    imgWrapper,
     productName,
-    productDescription,
     priceWrapper,
     productRating,
-    addToCart
+    productDescription,
+   
+
   );
 
 }
