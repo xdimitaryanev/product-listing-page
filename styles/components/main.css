@@ -25,7 +25,9 @@
 
 .main-products-wrapper {    
     display: flex;
-    margin-top: 4em;
+    justify-content: center;
+    align-items: flex-start;
+
 }
 
 .main-product-name {
@@ -38,17 +40,20 @@
 
 .main-filter {
     display: flex;
+    justify-content: center;
     z-index: -1;
-    background-color: palegoldenrod;
+    background-color: var(--clr-gray100);
     font-size: var(--size-lg);
     position: sticky;
     width: 200px;
+    height: 100%;
     top: 3em;
     margin-right: 1em;
+
 }
 
 .main-products {
-    flex: 1;
+        flex: 1;
     display: grid;
     grid-gap: 1em;
     justify-content: center;
@@ -77,6 +82,7 @@
     overflow:hidden;
     text-overflow:ellipsis;  
     margin: 1em 1em;
+    max-width: 30ch;
 }
 
 .main-price-wrapper {
@@ -125,6 +131,14 @@ filter:blur(2px);
     transition: all 0.5s ease;
 }
 
+.main-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
 .main-add-to-cart-btn {
     text-align: center;
     font-family: Oswald, sans-serif;
@@ -149,4 +163,8 @@ filter:blur(2px);
     
   }
 
-  
+  .main-counter {
+    display: flex;
+    justify-content: center;
+    margin-top: 5em;
+  }

@@ -62,8 +62,9 @@ function createProduct(i,arr) {
 
   //create elements for the product//
 
-  const counter = document.querySelector(".main-counter")
-  counter.textContent = `Showing: ${loadedProducts}of${arr.length}`
+  const counter = document.querySelectorAll(".main-counter")
+  counter[0].textContent = `Showing: ${loadedProducts} of ${arr.length}`
+  counter[1].textContent = `Showing: ${loadedProducts} of ${arr.length}`
 
   //img
   const imgWrapper = document.createElement("div");
@@ -141,7 +142,7 @@ async function loadProducts(category) {
 
   const addMoreBtn = document.createElement("button");
   addMoreBtn.classList.add("main-btn");
-  addMoreBtn.textContent = "click"
+  addMoreBtn.textContent = "Load More"
 
   btnWrapper.append(addMoreBtn)
   addMoreBtn.addEventListener("click", (e) => {
