@@ -41,8 +41,9 @@
 }
 
 .logo {
+    width: var(--size-2xl);
     height: var(--size-2xl);
-    margin-left: var(--size-xxs)
+    margin-left: var(--size-xxs);
 }
 
 

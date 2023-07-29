@@ -16,7 +16,10 @@ function loadCategories(arr) {
   }
   for (let i = 0; i < chosenCategoriesArr.length; i++) {
     const menuEl = document.createElement("a");
-    // menuEl.addEventListener("click", loadProducts(chosenCategoriesArr[i]));
+    menuEl.addEventListener("click", (e)=>{
+      resetProductGrid()
+      loadProducts(e.target.innerText)
+    })
     menuEl.textContent = arr[i];
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
@@ -43,6 +46,7 @@ const productGrid = document.querySelector(".main-products");
 // let productsArr = await fetchProducts("eyeliner");
 // let allProducts = productsArr.length;
 let loadedProducts = 0;
+const mainEl = document.querySelector(".main")
 
 //* FUNCTION create product *//
 function createProduct(i,arr) {
@@ -100,12 +104,11 @@ function createProduct(i,arr) {
   );
 
 }
-
+const btnWrapper = document.querySelector(".main-btn-wrapper")
 //* load products on 1st page load * //
 async function loadProducts(category) {
  const arr = await fetchProducts(category);
  const allProducts = arr.length
-console.log(arr.length)
 
   if (allProducts >= 20) {
     endIndex = 20;
@@ -119,8 +122,8 @@ console.log(arr.length)
   const addMoreBtn = document.createElement("button");
   addMoreBtn.classList.add("main-btn");
   addMoreBtn.textContent = "click"
-  const mainEl = document.querySelector(".main")
-  mainEl.append(addMoreBtn)
+
+  btnWrapper.append(addMoreBtn)
   addMoreBtn.addEventListener("click", (e) => {
     if (allProducts - loadedProducts === 0) {
       e.target.style.color = "red";
@@ -141,11 +144,13 @@ console.log(arr.length)
 
 
 
-// function resetProductGrid() {
-//   while (productGrid.firstChild) {
-//     productGrid.removeChild(productGrid.firstChild);
-//   }
-// }
+function resetProductGrid() {
+  while (productGrid.firstChild) {
+    productGrid.removeChild(productGrid.firstChild);
+  }
+
+  btnWrapper.removeChild(btnWrapper.lastChild)
+}
 
 
 
@@ -155,7 +160,7 @@ console.log(arr.length)
 
 
 
-window.onload = loadProducts("lipliner");
+window.onload = loadProducts("lipstick");
 window.onload = loadCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
 
 
