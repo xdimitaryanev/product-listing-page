@@ -43,8 +43,6 @@ async function fetchProducts(category) {
 
 //declare variables//
 const productGrid = document.querySelector(".main-products");
-// let productsArr = await fetchProducts("eyeliner");
-// let allProducts = productsArr.length;
 let loadedProducts = 0;
 const mainEl = document.querySelector(".main")
 
@@ -69,25 +67,33 @@ function createProduct(i,arr) {
   //name
   const productName = document.createElement("h3");
   productName.textContent = product.name;
+
   //description
   const productDescription = document.createElement("p");
-  productDescription.textContent = product.slug;
+  productDescription.classList.add("main-product-description")
+  productDescription.textContent = product.description;
   //price
   const priceWrapper = document.createElement("div");
   priceWrapper.classList.add("main-price-wrapper");
   const productPrice = document.createElement("span");
-  productPrice.textContent = `Price: ${product.price}$`;
-  // if (product.discount > 0) {
-  //   const discountedPriceProduct = document.createElement("span");
-  //   const discountedPriceProductValue = product.price - (product.discount * product.price / 100);
-  //   discountedPriceProduct.textContent = `NOW ${product.discount}% OFF ${discountedPriceProductValue}$`;
-  //   productPrice.classList.add("main-product-discounted");
-  //   priceWrapper.append(productPrice, discountedPriceProduct);
-  // }
+  productPrice.textContent = `Price: ${product.price}${product.price_sign} ${product.currency}`;
+  priceWrapper.append(productPrice)
+  if (product.hasOwnProperty("discount")) {
+    const discountedPriceProduct = document.createElement("span");
+    const discountedPriceProductValue = product.price - (product.discount * product.price / 100);
+    discountedPriceProduct.textContent = `NOW ${product.discount}% OFF ${discountedPriceProductValue}$`;
+    productPrice.classList.add("main-product-discounted");
+    priceWrapper.append(productPrice, discountedPriceProduct);
+  }
   
   //rating
   const productRating = document.createElement("span");
-  productRating.textContent = `Rating: 6`;
+  if (product.rating === null) {
+    productRating.textContent = `Rating: 0`;
+  } else {
+    productRating.textContent = `Rating: ${product.rating}`;
+  }
+
   //cart
   const addToCart = document.createElement("img");
   addToCart.src = `cart.png`;
@@ -124,7 +130,7 @@ async function loadProducts(category) {
   addMoreBtn.textContent = "click"
 
   btnWrapper.append(addMoreBtn)
-  addMoreBtn.addEventListener("click", (e) => {
+  addMoreBtn.addEventListener("click", (e,allProducts) => {
     if (allProducts - loadedProducts === 0) {
       e.target.style.color = "red";
       return;

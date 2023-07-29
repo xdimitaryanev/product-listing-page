@@ -1,69 +1,17 @@
 [
     {
-        "id": 1047,
-        "brand": "colourpop",
-        "name": "Blotted Lip",
-        "price": "5.5",
-        "price_sign": "$",
-        "currency": "CAD",
-        "image_link": "https://cdn.shopify.com/s/files/1/1338/0845/products/brain-freeze_a_800x1200.jpg?v=1502255076",
-        "product_link": "https://colourpop.com/collections/lippie-stix?filter=blotted-lip",
-        "website_link": "https://colourpop.com",
-        "description": "Blotted Lip Sheer matte lipstick that creates the perfect popsicle pout! Formula is lightweight, matte and buildable for light to medium coverage.",
-        "rating": null,
-        "category": "lipstick",
-        "product_type": "lipstick",
-        "tag_list": [
-            "cruelty free",
-            "Vegan"
-        ],
-        "created_at": "2018-07-08T22:01:20.178Z",
-        "updated_at": "2018-07-09T00:53:23.287Z",
-        "product_api_url": "https://makeup-api.herokuapp.com/api/v1/products/1047.json",
-        "api_featured_image": "//s3.amazonaws.com/donovanbailey/products/api_featured_images/000/001/047/original/open-uri20180708-4-e7idod?1531087336",
-        "product_colors": [
-            {
-                "hex_value": "#b72227",
-                "colour_name": "Bee's Knees"
-            },
-            {
-                "hex_value": "#BB656B",
-                "colour_name": "Brain Freeze"
-            },
-            {
-                "hex_value": "#8E4140",
-                "colour_name": "Drip"
-            },
-            {
-                "hex_value": "#A12A33",
-                "colour_name": "On a Stick"
-            },
-            {
-                "hex_value": "#904550",
-                "colour_name": "Ice Cube"
-            },
-            {
-                "hex_value": "#452222",
-                "colour_name": "Lolly"
-            },
-            {
-                "hex_value": "#7C3F35",
-                "colour_name": "Candyfloss"
-            }
-        ]
-    },
-    {
         "id": 1046,
         "brand": "colourpop",
         "name": "Lippie Stix",
         "price": "5.5",
+        "discount": "10",
         "price_sign": "$",
         "currency": "CAD",
         "image_link": "https://cdn.shopify.com/s/files/1/1338/0845/collections/blottedlip-lippie-stix_grande.jpg?v=1512588803",
         "product_link": "https://colourpop.com/collections/lippie-stix",
         "website_link": "https://colourpop.com",
         "description": "Lippie Stix Formula contains Vitamin E, Mango, Avocado, and Shea butter for added comfort and moisture. None of our Lippie formulas contain any nasty ingredients like Parabens or Sulfates.",
-        "rating": null,
+        "rating": "4.5",
         "category": "lipstick",
         "product_type": "lipstick",
         "tag_list": [
@@ -266,13 +214,14 @@
         "brand": "nyx",
         "name": "Luv Out Loud Liquid Lipstick",
         "price": "7.0",
+        "discount": "5",
         "price_sign": "$",
         "currency": "USD",
         "image_link": "https://www.nyxcosmetics.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-cpd-nyxusa-master-catalog/default/dw063995a2/ProductImages/2017/Lips/Luv_Out_Loud_Liquid_Lipstick/luvoutloudliquidlipstick_main.jpg?sw=390&sh=390&sm=fit",
         "product_link": "https://www.nyxcosmetics.com/luv-out-loud-liquid-lipstick/NYX_512.html?cgid=lipstick",
         "website_link": "https://www.nyxcosmetics.com",
         "description": "What qualities make a person beautiful? Passion, confidence and fearlessness, to name a few. Available in six velvety-matte shades, our new Luv Out Loud Liquid Lipsticks capture the attributes we at NYX Professional Makeup find truly beautiful. Gift one, two-or all six lippies to a friend who rocks these amazing qualities and inspires you to live (and luv!) out loud.",
-        "rating": null,
+        "rating": "5",
         "category": "lipstick",
         "product_type": "lipstick",
         "tag_list": [],
@@ -318,7 +267,7 @@
         "product_link": "https://www.nyxcosmetics.com/vamped-up-lip-top-coat/NYX_174.html?cgid=lipstick",
         "website_link": "https://www.nyxcosmetics.com",
         "description": "Cast a spell on your neutral lippies with a swipe of our wicked V'Amped Up! Lip Top Coat. Infused with shea butter and Vitamin E this glossy pencil moisturizes while transforming light lip colors to deep vampy shades.",
-        "rating": null,
+        "rating": "4",
         "category": "lipstick",
         "product_type": "lipstick",
         "tag_list": [],
@@ -385,7 +334,7 @@
         "product_link": "https://www.nyxcosmetics.com/simply-red-lip-cream/NYX_163.html?cgid=lipstick",
         "website_link": "https://www.nyxcosmetics.com",
         "description": "A classic red pout never goes out of style! Our Simply Red Lip Cream collection gives you loads of color options varying from deep bright or pure red that you can’t go wrong with.",
-        "rating": null,
+        "rating": "5",
         "category": "lipstick",
         "product_type": "lipstick",
         "tag_list": [],
@@ -425,6 +374,7 @@
         "brand": "nyx",
         "name": "Simply Nude Lip Cream",
         "price": "6.5",
+        "discount": "5",
         "price_sign": "$",
         "currency": "USD",
         "image_link": "https://www.nyxcosmetics.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-cpd-nyxusa-master-catalog/default/dw6790cad4/ProductImages/Lips/Simply_Nude_Lip_Cream/simplynudlipcream_main.jpg?sw=390&sh=390&sm=fit",
@@ -787,41 +737,7 @@
                 "colour_name": "Matte Mauve"
             }
         ]
-    },
-    {
-        "id": 875,
-        "brand": "nyx",
-        "name": "In Your Element Lipstick - Air",
-        "price": "9.0",
-        "price_sign": "$",
-        "currency": "USD",
-        "image_link": "https://www.nyxcosmetics.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-cpd-nyxusa-master-catalog/default/dw7fdf92ae/ProductImages/2017/Holiday/in_your_element_lipsticks/in_your_element_lipstick_air/inyourelementlipstickair_main.jpg?sw=390&sh=390&sm=fit",
-        "product_link": "https://www.nyxcosmetics.com/in-your-element-lipstick-air/NYX_558.html?cgid=lipstick",
-        "website_link": "https://www.nyxcosmetics.com",
-        "description": "",
-        "rating": null,
-        "category": "lipstick",
-        "product_type": "lipstick",
-        "tag_list": [],
-        "created_at": "2017-12-24T02:27:04.998Z",
-        "updated_at": "2017-12-24T02:27:05.298Z",
-        "product_api_url": "https://makeup-api.herokuapp.com/api/v1/products/875.json",
-        "api_featured_image": "//s3.amazonaws.com/donovanbailey/products/api_featured_images/000/000/875/original/open-uri20171224-4-16xna3r?1514082424",
-        "product_colors": [
-            {
-                "hex_value": "#A1483A",
-                "colour_name": "Glossy Pale Pink"
-            },
-            {
-                "hex_value": "#B5595C",
-                "colour_name": "Matte Rose"
-            },
-            {
-                "hex_value": "#C1573F",
-                "colour_name": "Glossy Peach"
-            }
-        ]
-    },
+    }, 
     {
         "id": 873,
         "brand": "nyx",

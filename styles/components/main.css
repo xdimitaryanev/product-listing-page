@@ -41,9 +41,11 @@
     flex: 1;
     display: grid;
     grid-gap: 1em;
+    justify-content: center;
+    align-items: baseline;
     grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-    grid-template-rows: repeat(auto-fit, 540px);
-    grid-auto-rows: 540px;
+    grid-template-rows: repeat(auto-fit, 640px);
+    grid-auto-rows: 640px;
     grid-auto-flow: row;
 }
 
@@ -55,6 +57,17 @@
     border-radius: 1em;
 }
 
+.main-product-description {
+    font-family: Montserrat sans-serif;
+    font-weight: 500;
+    font-size: var(--size-sm);
+    max-height: 220px;
+    text-align: center;
+    overflow:hidden;
+    text-overflow:ellipsis;  
+}
+
+
 .main-product-discounted {
     color: var(--clr-pink400);
     text-decoration: line-through;
@@ -62,6 +75,7 @@
 .main-product-discounted p {
     text-decoration: none;
     color: black;
+
 }
 
 .main-img {
