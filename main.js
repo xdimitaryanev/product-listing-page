@@ -44,7 +44,8 @@ async function fetchProducts(category) {
 //declare variables//
 const productGrid = document.querySelector(".main-products");
 let loadedProducts = 0;
-const mainEl = document.querySelector(".main")
+const mainEl = document.querySelector(".main");
+const categoryEl = document.querySelector(".main-category")
 
 //* FUNCTION create product *//
 function createProduct(i,arr) {
@@ -115,7 +116,7 @@ const btnWrapper = document.querySelector(".main-btn-wrapper")
 async function loadProducts(category) {
  const arr = await fetchProducts(category);
  const allProducts = arr.length
-
+ categoryEl.textContent = category
   if (allProducts >= 20) {
     endIndex = 20;
   } else {
