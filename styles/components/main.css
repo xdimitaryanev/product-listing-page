@@ -79,6 +79,10 @@
     margin: 1em 1em;
 }
 
+.main-price-wrapper {
+    font-family: Oswald,sans-serif;
+}
+
 
 .main-product-discounted {
     color: var(--clr-pink400);

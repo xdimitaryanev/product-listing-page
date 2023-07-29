@@ -61,6 +61,9 @@ function createProduct(i,arr) {
 
   //create elements for the product//
 
+  const counter = document.querySelector(".main-counter")
+  counter.textContent = `Showing: ${loadedProducts}of${arr.length}`
+
   //img
   const imgWrapper = document.createElement("div");
   imgWrapper.classList.add("main-img-wrapper")
@@ -79,6 +82,7 @@ function createProduct(i,arr) {
   productDescription.textContent = product.description;
   //price
   const priceWrapper = document.createElement("div");
+  priceWrapper.classList.add("main-price-wrapper")
   priceWrapper.classList.add("main-price-wrapper");
   const productPrice = document.createElement("span");
   productPrice.textContent = `Price: ${product.price}${product.price_sign} ${product.currency}`;
@@ -86,7 +90,7 @@ function createProduct(i,arr) {
   if (product.hasOwnProperty("discount")) {
     const discountedPriceProduct = document.createElement("span");
     const discountedPriceProductValue = product.price - (product.discount * product.price / 100);
-    discountedPriceProduct.textContent = `NOW ${product.discount}% OFF ${discountedPriceProductValue}$`;
+    discountedPriceProduct.textContent = `${discountedPriceProductValue}$`;
     productPrice.classList.add("main-product-discounted");
     priceWrapper.append(productPrice, discountedPriceProduct);
   }
@@ -108,9 +112,10 @@ function createProduct(i,arr) {
   //add elements to the product wrapper
   el.append(
     imgWrapper,
+    productRating,
     productName,
     priceWrapper,
-    productRating,
+    
     productDescription,
    
 
@@ -122,6 +127,7 @@ const btnWrapper = document.querySelector(".main-btn-wrapper")
 async function loadProducts(category) {
  const arr = await fetchProducts(category);
  const allProducts = arr.length
+ console.log(allProducts)
  categoryEl.textContent = category
   if (allProducts >= 20) {
     endIndex = 20;
@@ -137,7 +143,8 @@ async function loadProducts(category) {
   addMoreBtn.textContent = "click"
 
   btnWrapper.append(addMoreBtn)
-  addMoreBtn.addEventListener("click", (e,allProducts) => {
+  addMoreBtn.addEventListener("click", (e) => {
+    
     if (allProducts - loadedProducts === 0) {
       e.target.style.color = "red";
       return;
@@ -151,8 +158,7 @@ async function loadProducts(category) {
     for (let i = startIndex; i < endIndex; i++) {
       createProduct(i,arr);
     }
-
-  });  
+ });  
 }
 
 
@@ -161,7 +167,7 @@ function resetProductGrid() {
   while (productGrid.firstChild) {
     productGrid.removeChild(productGrid.firstChild);
   }
-
+  loadedProducts = 0;
   btnWrapper.removeChild(btnWrapper.lastChild)
 }
 
