@@ -106,7 +106,6 @@
     font-family: Oswald,sans-serif;
 }
 
-
 .main-product-discounted {
     color: var(--clr-pink400);
     text-decoration: line-through;
@@ -165,19 +164,17 @@ filter:blur(2px);
     transition: all 0.3s ease;
     grid-row: 1/2;
     grid-column: 1/2;
-
     color: var(--clr-dark);
     padding: 0.5em 0.5em;
     background-color: rgba(138, 138, 138, 0.707);
     border-radius: 0.1em;
     transform: translateY(-20px);
-
+    border: 1px solid var(--clr-pink400);
   }
   
   .main-img-wrapper:hover .main-add-to-cart-btn {
     opacity: 1;
     transform: translateY(0px);
-    
   }
 
   .main-counter {
@@ -185,3 +182,4 @@ filter:blur(2px);
     justify-content: center;
     margin-top: 5em;
   }
+

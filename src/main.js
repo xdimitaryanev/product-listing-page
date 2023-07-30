@@ -1,9 +1,15 @@
-import "./styles/normalize.css";
-import "./styles/style.css";
-import "./styles/components/header.css";
-import "./styles/components/main.css";
-import "/styles/utils.css";
+import "../styles/normalize.css";
+import "../styles/style.css";
+import "../styles/components/header.css";
+import "../styles/components/main.css";
+import "../styles/utils.css";
+import mobileMenu from './utils/mobileMenu';
+import { fetchCategoryDescriptions,fetchProducts } from "./utils/fetchingData";
+import slideFromLeft from "./utils/observer";
 
+
+
+mobileMenu()
 // DECLARE VARIABLES //
 let startIndex = 0;
 let endIndex = 20;
@@ -40,7 +46,9 @@ function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
   });
 }
 
-async function loadFilterList(category) {
+
+//* FUNCTION CREATE FILTER *//
+async function createFilterList(category) {
   const arr = await fetchProducts(category);
   const arrBrands = [];
   arr.forEach((element) => {
@@ -60,6 +68,7 @@ async function loadFilterList(category) {
   const propertyNames = Object.keys(obj);
   const li = document.createElement("li");
   li.textContent = `${propertyNames[1]}s`;
+  li.classList.add("main-brand-list")
   filterWrapper.append(li);
   filterWrapper.addEventListener("click", (event) => {
     const brandel = arrBrands.find(
@@ -69,7 +78,7 @@ async function loadFilterList(category) {
       const filteredArr = arr.filter((obj) => obj.brand === brandel);
       const allFilteredProducts = filteredArr.length;
       loadedProducts = 0;
-      resetProductGrid();
+      removeProductGrid();
       createLoadMoreBtn(allFilteredProducts, filteredArr);
       if (allFilteredProducts >= 20) {
         endIndex = 20;
@@ -85,21 +94,15 @@ async function loadFilterList(category) {
   });
 }
 
-//* FUNCTION fetch category description *//
-async function fetchCategoryDescriptions() {
-  const response = await fetch(`data/descriptions.json`);
-  return await response.json();
-}
-
 const descriptionsArr = await fetchCategoryDescriptions();
 //* FUNCTION add Short Description for Selected Category *//
-function loadCategoryDescriptions(category) {
+function createCategoryDescriptions(category) {
   const description = descriptionsArr[0][category];
   categoryDescriptionEl.textContent = description;
 }
-
+const mobileMenuList = document.querySelector(".header-mobile-menu-list");
 //* FUNCTION add Navigation MENU *//
-function loadCategories(arr) {
+function createCategories(arr) {
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
     chosenCategoriesArr.push(arr[i]);
@@ -108,27 +111,30 @@ function loadCategories(arr) {
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
     liEl.addEventListener("click", (e) => {
-      resetFilterList()
-      resetProductGrid();
-      loadCategoryDescriptions(e.target.innerText);
+      removeFilterList()
+      removeProductGrid();
+      createCategoryDescriptions(e.target.innerText);
       loadProducts(e.target.innerText);
-      loadFilterList(e.target.innerText);
+      createFilterList(e.target.innerText);
     });
     liEl.textContent = arr[i];
     ulEl.append(liEl);
+    const mobileLi = document.createElement("li");
+    mobileLi.textContent = arr[i];
+    mobileLi.classList.add("hidden");
+    mobileLi.addEventListener("click", (e) => {
+      removeFilterList()
+      removeProductGrid();
+      createCategoryDescriptions(e.target.innerText);
+      loadProducts(e.target.innerText);
+      createFilterList(e.target.innerText);
+    })
+    mobileMenuList.append(mobileLi);
+
+
   }
 }
 
-//* FUNCTION fetch products *//
-async function fetchProducts(category) {
-  try {
-    const response = await fetch(`data/${category}.json`);
-    return await response.json();
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    return [];
-  }
-}
 
 //* FUNCTION create product *//
 function createProduct(i, arr) {
@@ -203,7 +209,7 @@ function createProduct(i, arr) {
 }
 
 const btnWrapper = document.querySelector(".main-btn-wrapper");
-//* load products on 1st page load * //
+//* load products on page load * //
 async function loadProducts(category) {
   const arrOfAllProducts = await fetchProducts(category);
   const allProductsCount = arrOfAllProducts.length;
@@ -219,7 +225,7 @@ async function loadProducts(category) {
   createLoadMoreBtn(allProductsCount, arrOfAllProducts);
 }
 
-function resetProductGrid() {
+function removeProductGrid() {
   while (productGrid.firstChild) {
     productGrid.removeChild(productGrid.firstChild);
   }
@@ -227,16 +233,16 @@ function resetProductGrid() {
   btnWrapper.removeChild(btnWrapper.lastChild);
 }
 
-function resetFilterList() {
+function removeFilterList() {
   const arr = document.querySelectorAll(".main-brand-list")
   arr.forEach(element => { 
     element.remove()
-    
   });
 }
 
-window.onload = loadProducts("lipstick");
-window.onload = loadCategoryDescriptions("LIPSTICK");
-window.onabort = loadFilterList("lipstick");
-window.onload = loadCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
 
+window.onload = loadProducts("lipstick");
+window.onload = createCategoryDescriptions("LIPSTICK");
+window.onabort = createFilterList("lipstick");
+window.onload = createCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
+window.onload = slideFromLeft()
