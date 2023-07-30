@@ -17,10 +17,18 @@
 .main-header-wrapper {
     margin-top: 4em;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 1px solid black;
-    
+}
+
+.main-category-description {
+    max-width: 140ch;
+    font-size: var(--size-sm);
+    text-align: center;
+    padding-bottom: 1em;
+    font-family: Montserrat,sans-serif;
 }
 
 .main-products-wrapper {    
@@ -40,7 +48,9 @@
 
 .main-filter {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     z-index: -1;
     background-color: var(--clr-gray100);
     font-size: var(--size-lg);
@@ -49,6 +59,13 @@
     height: 100%;
     top: 3em;
     margin-right: 1em;
+    text-align: left;
+
+}
+
+.main-filter-list {
+    display: flex;
+    flex-direction: column;
 
 }
 

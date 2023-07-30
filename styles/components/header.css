@@ -24,7 +24,7 @@
     display: none;
 }
 
-.header-menu a {
+.header-menu li {
     color: var(--clr-light);
     font-size: var(--size-base);
     font-weight: 200;
@@ -32,7 +32,7 @@
     cursor: pointer;
 }
 
-.header-menu a:hover {
+.header-menu li:hover {
     color: var(--clr-pink400)
 }
 

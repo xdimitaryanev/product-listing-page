@@ -8,6 +8,31 @@ let startIndex = 0;
 let endIndex = 20;
 
 
+//declare variables//
+const productGrid = document.querySelector(".main-products");
+let loadedProducts = 0;
+const mainEl = document.querySelector(".main");
+const categoryEl = document.querySelector(".main-category")
+const categoryDescriptionEl = document.querySelector(".main-category-description");
+
+
+
+
+//* FUNCTION fetch category description *//
+async function fetchCategoryDescriptions() {
+  const response = await fetch(`data/descriptions.json`)
+  return await response.json();  
+} 
+
+const descriptionsArr = await fetchCategoryDescriptions();
+
+
+function loadCategoryDescriptions(category) {
+  const description = descriptionsArr[0][category];
+  categoryDescriptionEl.textContent = description;
+}
+
+
 
 function loadCategories(arr) {
   let chosenCategoriesArr = [];
@@ -15,22 +40,27 @@ function loadCategories(arr) {
     chosenCategoriesArr.push(arr[i]);
   }
   for (let i = 0; i < chosenCategoriesArr.length; i++) {
-    const menuEl = document.createElement("a");
-    menuEl.addEventListener("click", (e)=>{
-      resetProductGrid()
-      loadProducts(e.target.innerText)
-    })
-    menuEl.textContent = arr[i];
+
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
+    liEl.addEventListener("click", (e)=>{
+      resetProductGrid()
+      loadCategoryDescriptions(e.target.innerText)
+      console.log(e.target.innerText)
+      loadProducts(e.target.innerText)
+     
+    })
+   
+
+    liEl.textContent = arr[i];
     ulEl.append(liEl);
-    liEl.append(menuEl);
+ 
   }
 }
 
 
 
-//fetch products//
+//* FUNCTION fetch products *//
 async function fetchProducts(category) {
   try {
     const response = await fetch(`data/${category}.json`);
@@ -41,11 +71,12 @@ async function fetchProducts(category) {
   }
 }
 
-//declare variables//
-const productGrid = document.querySelector(".main-products");
-let loadedProducts = 0;
-const mainEl = document.querySelector(".main");
-const categoryEl = document.querySelector(".main-category")
+
+
+
+
+
+
 
 //* FUNCTION create product *//
 function createProduct(i,arr) {
@@ -182,6 +213,7 @@ function resetProductGrid() {
 
 
 window.onload = loadProducts("lipstick");
+window.onload = loadCategoryDescriptions("LIPSTICK")
 window.onload = loadCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
 
 
