@@ -4,17 +4,88 @@ import "./styles/components/header.css";
 import "./styles/components/main.css";
 import "/styles/utils.css";
 
+//declare variables//
 let startIndex = 0;
 let endIndex = 20;
-
-
-//declare variables//
 const productGrid = document.querySelector(".main-products");
 let loadedProducts = 0;
 const mainEl = document.querySelector(".main");
-const categoryEl = document.querySelector(".main-category")
+const categoryEl = document.querySelector(".main-category");
 const categoryDescriptionEl = document.querySelector(".main-category-description");
+const filterList = document.querySelector(".main-filter-list");
+const filterWrapper = document.querySelector(".main-filter-wrapper");
 
+function createBtn (allProductsCount,arrOfAllProducts) {
+  const addMoreBtn = document.createElement("button");
+  addMoreBtn.classList.add("main-btn");
+  addMoreBtn.textContent = "Load More"
+
+  btnWrapper.append(addMoreBtn)
+  addMoreBtn.addEventListener("click", (e) => {
+    
+    if (allProductsCount - loadedProducts === 0) {
+      e.target.style.color = "red";
+      return;
+    } else if (allProductsCount - loadedProducts < 20) {
+      startIndex = loadedProducts;
+      endIndex = allProductsCount;
+    } else if (allProductsCount - loadedProducts >= 20) {
+      endIndex += 20;
+      startIndex = loadedProducts;
+    }
+    for (let i = startIndex; i < endIndex; i++) {
+      createProduct(i,arrOfAllProducts);
+    }
+ });  
+}
+
+
+
+async function loadFilterList(category) {
+  const arr = await fetchProducts(category);
+  
+  const arrBrands = [];
+  arr.forEach(element => {
+    if(arrBrands.includes(element.brand)) {
+      return;
+    } else {
+      arrBrands.push(element.brand);
+    }
+  });
+  arrBrands.forEach(element => {
+    const brand = document.createElement("li");
+    brand.textContent = `${element}`;
+    filterWrapper.append(brand);
+  });
+  const obj = arr[0];
+  const propertyNames = Object.keys(obj)
+  const li = document.createElement("li");
+  li.textContent = `${propertyNames[1]}s`
+  filterWrapper.append(li); 
+
+  filterWrapper.addEventListener("click", (event)=> {
+    const brandel = arrBrands.find((element)=> element === event.target.innerText)
+    if(brandel) {
+      const filteredArr = arr.filter(obj => obj.brand === brandel);
+      const allFilteredProducts = filteredArr.length;
+      loadedProducts = 0
+      resetProductGrid()
+      createBtn(allFilteredProducts, filteredArr)
+      if (allFilteredProducts >= 20) {
+        endIndex = 20;
+      } else {
+        endIndex = allFilteredProducts;
+      }
+      console.log(endIndex)
+      for (let i = 0; i < endIndex; i++) {
+        createProduct(i,filteredArr);
+      }
+      
+    } else {
+     return;
+    }
+  })
+}
 
 
 
@@ -24,16 +95,18 @@ async function fetchCategoryDescriptions() {
   return await response.json();  
 } 
 
+
+
+
 const descriptionsArr = await fetchCategoryDescriptions();
-
-
+//* FUNCTION add Short Description for Selected Category *//
 function loadCategoryDescriptions(category) {
   const description = descriptionsArr[0][category];
   categoryDescriptionEl.textContent = description;
 }
 
 
-
+//* FUNCTION add Navigation MENU *//
 function loadCategories(arr) {
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
@@ -44,20 +117,14 @@ function loadCategories(arr) {
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
     liEl.addEventListener("click", (e)=>{
-      resetProductGrid()
-      loadCategoryDescriptions(e.target.innerText)
-      console.log(e.target.innerText)
-      loadProducts(e.target.innerText)
-     
+      resetProductGrid();
+      loadCategoryDescriptions(e.target.innerText);
+      loadProducts(e.target.innerText);
     })
-   
-
     liEl.textContent = arr[i];
     ulEl.append(liEl);
- 
   }
 }
-
 
 
 //* FUNCTION fetch products *//
@@ -70,13 +137,6 @@ async function fetchProducts(category) {
     return [];
   }
 }
-
-
-
-
-
-
-
 
 //* FUNCTION create product *//
 function createProduct(i,arr) {
@@ -148,13 +208,10 @@ function createProduct(i,arr) {
     productRating,
     productName,
     priceWrapper,
-    
     productDescription,
-   
-
   );
-
 }
+
 const btnWrapper = document.querySelector(".main-btn-wrapper")
 //* load products on 1st page load * //
 async function loadProducts(category) {
@@ -170,31 +227,29 @@ async function loadProducts(category) {
   for (let i = 0; i < endIndex; i++) {
     createProduct(i,arr);
   }
+  createBtn(allProducts, arr)
+//   const addMoreBtn = document.createElement("button");
+//   addMoreBtn.classList.add("main-btn");
+//   addMoreBtn.textContent = "Load More"
 
-  const addMoreBtn = document.createElement("button");
-  addMoreBtn.classList.add("main-btn");
-  addMoreBtn.textContent = "Load More"
-
-  btnWrapper.append(addMoreBtn)
-  addMoreBtn.addEventListener("click", (e) => {
+//   btnWrapper.append(addMoreBtn)
+//   addMoreBtn.addEventListener("click", (e) => {
     
-    if (allProducts - loadedProducts === 0) {
-      e.target.style.color = "red";
-      return;
-    } else if (allProducts - loadedProducts < 20) {
-      startIndex = loadedProducts;
-      endIndex = allProducts;
-    } else if (allProducts - loadedProducts >= 20) {
-      endIndex += 20;
-      startIndex = loadedProducts;
-    }
-    for (let i = startIndex; i < endIndex; i++) {
-      createProduct(i,arr);
-    }
- });  
+//     if (allProducts - loadedProducts === 0) {
+//       e.target.style.color = "red";
+//       return;
+//     } else if (allProducts - loadedProducts < 20) {
+//       startIndex = loadedProducts;
+//       endIndex = allProducts;
+//     } else if (allProducts - loadedProducts >= 20) {
+//       endIndex += 20;
+//       startIndex = loadedProducts;
+//     }
+//     for (let i = startIndex; i < endIndex; i++) {
+//       createProduct(i,arr);
+//     }
+//  });  
 }
-
-
 
 function resetProductGrid() {
   while (productGrid.firstChild) {
@@ -204,16 +259,9 @@ function resetProductGrid() {
   btnWrapper.removeChild(btnWrapper.lastChild)
 }
 
-
-
-// function addToCart() {
-//   return alert("added");
-// }
-
-
-
 window.onload = loadProducts("lipstick");
 window.onload = loadCategoryDescriptions("LIPSTICK")
 window.onload = loadCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
+window.onabort = loadFilterList("lipstick")
 
 
