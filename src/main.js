@@ -5,11 +5,13 @@ import "../styles/components/main.css";
 import "../styles/utils.css";
 import mobileMenu from './utils/mobileMenu';
 import { fetchCategoryDescriptions,fetchProducts } from "./utils/fetchingData";
-import slideFromLeft from "./utils/observer";
+import { slideFromLeft,slideFromLeftContinuously } from "./utils/observers";
+import filterDropDown from "./utils/filterDropdown";
 
 
 
 mobileMenu()
+
 // DECLARE VARIABLES //
 let startIndex = 0;
 let endIndex = 20;
@@ -59,19 +61,23 @@ async function createFilterList(category) {
       brandsArr.push(element.brand);  // pushing only unique brand to the empty array
     }
   });
-  brandsArr.forEach((element) => {   // create li element for each unique brand fro the array
+  brandsArr.forEach((element) => {   // create li element for each unique brand from the array
     const brand = document.createElement("li");
-    brand.textContent = `${element}`;
+    const linkBrand = document.createElement("a");
+    linkBrand.href = "#products";
+    linkBrand.textContent = `${element}`;
     filterList.append(brand);
+    brand.append(linkBrand)
     brand.classList.add("main-brand-list");
+    brand.classList.add("hidden")
   });
+
   
   const singleProductObj = productsArr[0]; 
   const productProperties = Object.keys(singleProductObj);  
-  const filterCategory = document.createElement("li");
+  const filterCategory = document.querySelector(".main-filter-category")
   filterCategory.textContent = `${productProperties[1]}s`;
-  filterCategory.classList.add("main-filter-category");
-  filterList.prepend(filterCategory);
+
 
   filterList.addEventListener("click", (event) => {
     const brandTarget = brandsArr.find(
@@ -95,6 +101,8 @@ async function createFilterList(category) {
       return;
     }
   });
+  filterDropDown();
+  slideFromLeft();
 }
 
 const descriptionsArr = await fetchCategoryDescriptions();
@@ -106,6 +114,7 @@ function createCategoryDescriptions(category) {
 const mobileMenuList = document.querySelector(".header-mobile-menu-list");
 //* FUNCTION add Navigation MENU *//
 function createCategories(arr) {
+
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
     chosenCategoriesArr.push(arr[i]);
@@ -133,8 +142,6 @@ function createCategories(arr) {
       createFilterList(e.target.innerText);
     })
     mobileMenuList.append(mobileLi);
-
-
   }
 }
 
@@ -237,8 +244,6 @@ function removeProductGrid() {
 }
 
 function removeFilterList() {
-  const filterCategoryName = document.querySelector(".main-filter-category")
-  filterCategoryName.remove();
   const brandsArr = document.querySelectorAll(".main-brand-list")
   brandsArr.forEach(element => { 
     element.remove()
@@ -250,4 +255,6 @@ window.onload = loadProducts("lipstick");
 window.onload = createCategoryDescriptions("LIPSTICK");
 window.onabort = createFilterList("lipstick");
 window.onload = createCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
-window.onload = slideFromLeft()
+window.onload = slideFromLeftContinuously();
+
+
