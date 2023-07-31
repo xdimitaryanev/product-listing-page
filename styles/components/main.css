@@ -35,7 +35,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-
 }
 
 .main-product-name {
@@ -51,7 +50,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: -1;
     background-color: var(--clr-gray100);
     font-size: var(--size-lg);
     position: sticky;
@@ -60,17 +58,15 @@
     top: 3em;
     margin-right: 1em;
     text-align: left;
-
 }
 
 .main-filter-list {
     display: flex;
     flex-direction: column;
-
 }
 
 .main-products {
-        flex: 1;
+    flex: 1;
     display: grid;
     grid-gap: 1em;
     justify-content: center;
@@ -114,7 +110,6 @@
 .main-product-discounted p {
     text-decoration: none;
     color: black;
-
 }
 
 .main-price-wrapper {
@@ -135,7 +130,7 @@
 }
 
 .main-img-wrapper:hover .main-img {
-filter:blur(2px);
+    filter:blur(2px);
 }
 
 .main-img {

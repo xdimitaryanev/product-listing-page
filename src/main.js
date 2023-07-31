@@ -21,7 +21,8 @@ const mainEl = document.querySelector(".main");
 const categoryEl = document.querySelector(".main-category");
 const categoryDescriptionEl = document.querySelector(".main-category-description");
 const filterList = document.querySelector(".main-filter-list");
-const filterWrapper = document.querySelector(".main-filter-wrapper");
+const filterEL = document.querySelector(".main-filter");
+
 
 //* FUNCTION ADD LOAD MORE BTN TO UI *//
 function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
@@ -49,33 +50,35 @@ function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
 
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
-  const arr = await fetchProducts(category);
-  const arrBrands = [];
-  arr.forEach((element) => {
-    if (arrBrands.includes(element.brand)) {
+  const productsArr = await fetchProducts(category); 
+  const brandsArr = [];               // declaring empty array
+  productsArr.forEach((element) => {
+    if (brandsArr.includes(element.brand)) {
       return;
     } else {
-      arrBrands.push(element.brand);
+      brandsArr.push(element.brand);  // pushing only unique brand to the empty array
     }
   });
-  arrBrands.forEach((element) => {
+  brandsArr.forEach((element) => {   // create li element for each unique brand fro the array
     const brand = document.createElement("li");
     brand.textContent = `${element}`;
-    filterWrapper.append(brand);
-    brand.classList.add("main-brand-list")
+    filterList.append(brand);
+    brand.classList.add("main-brand-list");
   });
-  const obj = arr[0];
-  const propertyNames = Object.keys(obj);
-  const li = document.createElement("li");
-  li.textContent = `${propertyNames[1]}s`;
-  li.classList.add("main-brand-list")
-  filterWrapper.append(li);
-  filterWrapper.addEventListener("click", (event) => {
-    const brandel = arrBrands.find(
+  
+  const singleProductObj = productsArr[0]; 
+  const productProperties = Object.keys(singleProductObj);  
+  const filterCategory = document.createElement("li");
+  filterCategory.textContent = `${productProperties[1]}s`;
+  filterCategory.classList.add("main-filter-category");
+  filterList.prepend(filterCategory);
+
+  filterList.addEventListener("click", (event) => {
+    const brandTarget = brandsArr.find(
       (element) => element === event.target.innerText
     );
-    if (brandel) {
-      const filteredArr = arr.filter((obj) => obj.brand === brandel);
+    if (brandTarget) {
+      const filteredArr = productsArr.filter((obj) => obj.brand === brandTarget);
       const allFilteredProducts = filteredArr.length;
       loadedProducts = 0;
       removeProductGrid();
@@ -111,7 +114,7 @@ function createCategories(arr) {
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
     liEl.addEventListener("click", (e) => {
-      removeFilterList()
+      removeFilterList();
       removeProductGrid();
       createCategoryDescriptions(e.target.innerText);
       loadProducts(e.target.innerText);
@@ -123,7 +126,7 @@ function createCategories(arr) {
     mobileLi.textContent = arr[i];
     mobileLi.classList.add("hidden");
     mobileLi.addEventListener("click", (e) => {
-      removeFilterList()
+      removeFilterList();
       removeProductGrid();
       createCategoryDescriptions(e.target.innerText);
       loadProducts(e.target.innerText);
@@ -234,8 +237,10 @@ function removeProductGrid() {
 }
 
 function removeFilterList() {
-  const arr = document.querySelectorAll(".main-brand-list")
-  arr.forEach(element => { 
+  const filterCategoryName = document.querySelector(".main-filter-category")
+  filterCategoryName.remove();
+  const brandsArr = document.querySelectorAll(".main-brand-list")
+  brandsArr.forEach(element => { 
     element.remove()
   });
 }
