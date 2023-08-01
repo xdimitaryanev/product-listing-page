@@ -7,24 +7,31 @@ import mobileMenu from './utils/mobileMenu';
 import { fetchCategoryDescriptions,fetchProducts } from "./utils/fetchingData";
 import { slideFromLeft,slideFromLeftContinuously } from "./utils/observers";
 import filterDropDown from "./utils/filterDropdown";
+import { removeFilterList,removeProductGrid } from "./dom/removeFilterList";
+import priceSlider from "./utils/priceSlider";
 
-
-
+priceSlider
 mobileMenu()
-
 // DECLARE VARIABLES //
 let startIndex = 0;
 let endIndex = 20;
 let loadedProducts = 0;
 
 // DECLARE ELEMENTS //
+const btnWrapper = document.querySelector(".main-btn-wrapper");
 const productGrid = document.querySelector(".main-products");
 const mainEl = document.querySelector(".main");
 const categoryEl = document.querySelector(".main-category");
 const categoryDescriptionEl = document.querySelector(".main-category-description");
 const filterList = document.querySelector(".main-filter-list");
 const filterEL = document.querySelector(".main-filter");
+const minPriceValue = document.querySelector(".min-price-value");
+const minPriceInput = document.querySelector(".min-price-input");
+const maxPriceValue = document.querySelector(".max-price-value");
+const maxPriceInput = document.querySelector(".max-price-input");
 
+priceSlider(minPriceValue,minPriceInput);
+priceSlider(maxPriceValue,maxPriceInput);
 
 //* FUNCTION ADD LOAD MORE BTN TO UI *//
 function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
@@ -49,10 +56,10 @@ function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
   });
 }
 
-
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
   const productsArr = await fetchProducts(category); 
+  console.log(productsArr)
   const brandsArr = [];               // declaring empty array
   productsArr.forEach((element) => {
     if (brandsArr.includes(element.brand)) {
@@ -62,45 +69,52 @@ async function createFilterList(category) {
     }
   });
   brandsArr.forEach((element) => {   // create li element for each unique brand from the array
-    const brand = document.createElement("li");
-    const linkBrand = document.createElement("a");
-    linkBrand.href = "#products";
-    linkBrand.textContent = `${element}`;
-    filterList.append(brand);
-    brand.append(linkBrand)
-    brand.classList.add("main-brand-list");
-    brand.classList.add("hidden")
+    const brandLabel = document.createElement("label");
+    const brandCheckbox = document.createElement("input");
+    brandCheckbox.type = "checkbox";
+    brandCheckbox.name = "filter-brand";
+    brandCheckbox.value = element;
+    brandLabel.textContent = `${element}`;
+    brandLabel.append(brandCheckbox);
+    filterList.append(brandLabel);
+    brandLabel.classList.add("main-brand-list");
+    brandLabel.classList.add("hidden");
   });
 
-  
+  const filterBtn = document.createElement("button");
+  filterBtn.classList.add("main-filter-btn")
+  filterBtn.textContent = "Filter";
+  filterEL.append(filterBtn);
+
+  filterBtn.addEventListener("click", () => {
+    const brandCheckboxes = document.querySelectorAll('input[name="filter-brand"]');
+    const brandCheckboxesArr = Array.from(brandCheckboxes);
+    const filtereBrandsArr =  brandCheckboxesArr
+    .filter(element => element.checked)
+    .map(checkbox => checkbox.value);
+    let allFilteredProductsArr = [];
+    filtereBrandsArr.forEach(brand => {
+      const brandArr = productsArr.filter((obj) => obj.brand === brand);
+      allFilteredProductsArr = allFilteredProductsArr.concat(brandArr); 
+    });
+    console.log(allFilteredProductsArr)
+    const allFilteredProductsCount = allFilteredProductsArr.length;
+    loadedProducts = 0;
+    removeProductGrid();
+    createLoadMoreBtn(allFilteredProductsCount, allFilteredProductsArr);
+    if (allFilteredProductsCount >= 20) {
+      endIndex = 20;
+    } else {
+      endIndex = allFilteredProductsCount;
+    }
+    for (let i = 0; i < endIndex; i++) {
+      createProduct(i, allFilteredProductsArr);
+    }
+  })
   const singleProductObj = productsArr[0]; 
   const productProperties = Object.keys(singleProductObj);  
   const filterCategory = document.querySelector(".main-filter-category")
   filterCategory.textContent = `${productProperties[1]}s`;
-
-
-  filterList.addEventListener("click", (event) => {
-    const brandTarget = brandsArr.find(
-      (element) => element === event.target.innerText
-    );
-    if (brandTarget) {
-      const filteredArr = productsArr.filter((obj) => obj.brand === brandTarget);
-      const allFilteredProducts = filteredArr.length;
-      loadedProducts = 0;
-      removeProductGrid();
-      createLoadMoreBtn(allFilteredProducts, filteredArr);
-      if (allFilteredProducts >= 20) {
-        endIndex = 20;
-      } else {
-        endIndex = allFilteredProducts;
-      }
-      for (let i = 0; i < endIndex; i++) {
-        createProduct(i, filteredArr);
-      }
-    } else {
-      return;
-    }
-  });
   filterDropDown();
   slideFromLeft();
 }
@@ -111,9 +125,10 @@ function createCategoryDescriptions(category) {
   const description = descriptionsArr[0][category];
   categoryDescriptionEl.textContent = description;
 }
-const mobileMenuList = document.querySelector(".header-mobile-menu-list");
+
 //* FUNCTION add Navigation MENU *//
-function createCategories(arr) {
+function createNavMenu(arr) {
+  const mobileMenuList = document.querySelector(".header-mobile-menu-list");
 
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
@@ -125,6 +140,7 @@ function createCategories(arr) {
     liEl.addEventListener("click", (e) => {
       removeFilterList();
       removeProductGrid();
+      loadedProducts = 0;
       createCategoryDescriptions(e.target.innerText);
       loadProducts(e.target.innerText);
       createFilterList(e.target.innerText);
@@ -137,6 +153,7 @@ function createCategories(arr) {
     mobileLi.addEventListener("click", (e) => {
       removeFilterList();
       removeProductGrid();
+      loadedProducts = 0;
       createCategoryDescriptions(e.target.innerText);
       loadProducts(e.target.innerText);
       createFilterList(e.target.innerText);
@@ -218,7 +235,7 @@ function createProduct(i, arr) {
   );
 }
 
-const btnWrapper = document.querySelector(".main-btn-wrapper");
+
 //* load products on page load * //
 async function loadProducts(category) {
   const arrOfAllProducts = await fetchProducts(category);
@@ -235,26 +252,74 @@ async function loadProducts(category) {
   createLoadMoreBtn(allProductsCount, arrOfAllProducts);
 }
 
-function removeProductGrid() {
-  while (productGrid.firstChild) {
-    productGrid.removeChild(productGrid.firstChild);
-  }
-  loadedProducts = 0;
-  btnWrapper.removeChild(btnWrapper.lastChild);
-}
 
-function removeFilterList() {
-  const brandsArr = document.querySelectorAll(".main-brand-list")
-  brandsArr.forEach(element => { 
-    element.remove()
-  });
-}
+
+
 
 
 window.onload = loadProducts("lipstick");
 window.onload = createCategoryDescriptions("LIPSTICK");
-window.onabort = createFilterList("lipstick");
-window.onload = createCategories(["eyeliner", "lipliner", "lipstick", "mascara"]);
+window.onload = createFilterList("lipstick");
+window.onload = createNavMenu(["eyeliner", "lipliner", "lipstick", "mascara"]);
 window.onload = slideFromLeftContinuously();
 
+
+
+
+
+// //* FUNCTION CREATE FILTER *//
+// async function createFilterList(category) {
+//   const productsArr = await fetchProducts(category); 
+//   const brandsArr = [];               // declaring empty array
+//   productsArr.forEach((element) => {
+//     if (brandsArr.includes(element.brand)) {
+//       return;
+//     } else {
+//       brandsArr.push(element.brand);  // pushing only unique brand to the empty array
+//     }
+//   });
+//   brandsArr.forEach((element) => {   // create li element for each unique brand from the array
+//     const brand = document.createElement("li");
+//     const linkBrand = document.createElement("a");
+//     linkBrand.href = "#products";
+//     linkBrand.textContent = `${element}`;
+//     filterList.append(brand);
+//     brand.append(linkBrand)
+//     brand.classList.add("main-brand-list");
+//     brand.classList.add("hidden")
+//   });
+
+  
+//   const singleProductObj = productsArr[0]; 
+//   const productProperties = Object.keys(singleProductObj);  
+//   const filterCategory = document.querySelector(".main-filter-category")
+//   filterCategory.textContent = `${productProperties[1]}s`;
+
+
+//   filterList.addEventListener("click", (event) => {
+//     const brandTarget = brandsArr.find(
+//       (element) => element === event.target.innerText
+//     );
+//     if (brandTarget) {
+//       const filteredArr = productsArr.filter((obj) => obj.brand === brandTarget);
+//       const allFilteredProducts = filteredArr.length;
+//       console.log(filteredArr)
+//       loadedProducts = 0;
+//       removeProductGrid();
+//       createLoadMoreBtn(allFilteredProducts, filteredArr);
+//       if (allFilteredProducts >= 20) {
+//         endIndex = 20;
+//       } else {
+//         endIndex = allFilteredProducts;
+//       }
+//       for (let i = 0; i < endIndex; i++) {
+//         createProduct(i, filteredArr);
+//       }
+//     } else {
+//       return;
+//     }
+//   });
+//   filterDropDown();
+//   slideFromLeft();
+// }
 
