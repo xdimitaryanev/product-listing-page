@@ -4,14 +4,16 @@ import "../styles/components/header.css";
 import "../styles/components/main.css";
 import "../styles/components/footer.css";
 import "../styles/utils.css";
+import "../styles/components/slider.css"
+
 import mobileMenu from "./utils/mobileMenu";
-import { fetchCategoryDescriptions, fetchProducts } from "./utils/fetchingData";
+import { fetchProducts } from "./utils/fetchingData";
 import { slideFromLeft, slideFromLeftContinuously } from "./utils/observers";
 import filterDropDown from "./utils/filterDropdown";
 import { removeFilterList, removeProductGrid } from "./dom/removeFilterList";
-import priceSlider from "./utils/priceSlider";
 import createCategoryDescriptions from "./dom/categoryDescription";
 import scrollIntoView from "./utils/scrollIntoView";
+import { priceSlider,minProductPrice,maxProductPrice } from "./utils/priceSlider";
 
 
 
@@ -31,8 +33,7 @@ const minPriceInputEl = document.querySelector(".min-price-input");
 const maxPriceValueEl = document.querySelector(".max-price-value");
 const maxPriceInputEl = document.querySelector(".max-price-input");
 
-priceSlider(minPriceValueEl, minPriceInputEl);
-priceSlider(maxPriceValueEl, maxPriceInputEl);
+
 
 //< * FUNCTION CREATE Navigation MENU * >//
 function createNavMenu(arr) {
@@ -94,6 +95,7 @@ function createProduct(i, arr) {
 
   //create wrapper for the product
   const el = document.createElement("div");
+  el.classList.add("hidden")
   el.classList.add("product-wrapper");
   productGrid.append(el);
 
@@ -185,6 +187,24 @@ function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
   const productsArr = await fetchProducts(category);
+
+  let minPrice = minProductPrice(productsArr);
+  let maxPrice = maxProductPrice(productsArr);
+  console.log(maxPrice)
+
+  
+  minPriceInputEl.value = minPrice;
+  minPriceValueEl.textContent = minPrice;
+  minPriceInputEl.setAttribute("min", minPrice);
+  minPriceInputEl.setAttribute("max", maxPrice);
+
+
+  maxPriceInputEl.value = maxPrice;
+  maxPriceValueEl.textContent = maxPrice;
+  maxPriceInputEl.setAttribute("min",minPrice);
+  maxPriceInputEl.setAttribute("max", maxPrice);
+ 
+
   const brandsArr = []; // declaring empty array
   productsArr.forEach((element) => {
     if (brandsArr.includes(element.brand)) {
@@ -207,7 +227,6 @@ async function createFilterList(category) {
     brandLabel.classList.add("main-brand-list");
     brandLabel.classList.add("hidden");
   });
-
 
 
 
@@ -288,5 +307,7 @@ window.onload = function() {
   createNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
   slideFromLeftContinuously();
   mobileMenu();
+  priceSlider(minPriceValueEl, minPriceInputEl);
+  priceSlider(maxPriceValueEl, maxPriceInputEl);
 }
 

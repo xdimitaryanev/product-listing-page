@@ -10,7 +10,7 @@ const observer = new IntersectionObserver((entries)=> {
     }
   })
 },{
-  threshold: 1,
+  threshold: 0.7,
 })
 
 hiddenLeftEl.forEach((el)=>observer.observe(el));
@@ -18,7 +18,7 @@ hiddenLeftEl.forEach((el)=>observer.observe(el));
 
 export function slideFromLeftContinuously() {
   const hiddenLeftEl = document.querySelectorAll(".hidden");
-const observerContinuously = new IntersectionObserver((entries)=> {
+  const observerContinuously = new IntersectionObserver((entries)=> {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
         entry.target.classList.add("show")
@@ -33,5 +33,6 @@ const observerContinuously = new IntersectionObserver((entries)=> {
 hiddenLeftEl.forEach((el)=>observerContinuously.observe(el));
 
 }
+
 
 

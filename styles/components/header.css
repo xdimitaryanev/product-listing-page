@@ -79,11 +79,11 @@
 
 
   .hidden {
-    opacity: 00;
+    opacity: 0;
     filter: blur(15px);
     transition: all .4s ease;
     transform: translateX(-20px);
-    z-index: 999;
+
 }
 .show {
     opacity: 100;
