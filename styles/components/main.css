@@ -48,8 +48,10 @@
 .main-filter-category {
     font-family: Oswald, sans-serif;
     font-size: var(--size-3xl);
+    text-align: center;
     cursor: pointer;
     transition: all .3s ease;
+    padding: 0em 1em;
 }
 
 .main-filter-category:hover {
@@ -80,9 +82,9 @@
     font-size: var(--size-lg);
     position: sticky;
     border: 1px solid var(--clr-dark);
-    width: 200px;
+    width: 320px;
     height: 100%;
-    top: 3em;
+    top: 4em;
     margin-right: 1em;
 }
 
