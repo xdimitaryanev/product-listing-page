@@ -4,16 +4,24 @@ import "../styles/components/header.css";
 import "../styles/components/main.css";
 import "../styles/components/footer.css";
 import "../styles/utils.css";
-import "../styles/components/slider.css"
 
 import mobileMenu from "./utils/mobileMenu";
 import { fetchProducts } from "./utils/fetchingData";
 import { slideFromLeft, slideFromLeftContinuously } from "./utils/observers";
 import filterDropDown from "./utils/filterDropdown";
-import { removeFilterList, removeProductGrid } from "./dom/removeFilterList";
-import createCategoryDescriptions from "./dom/categoryDescription";
+import { removeFilterList, removeProductGrid } from "./dom/resetElements";
+import createCategoryDescriptions from "./dom/loadDescription";
 import scrollIntoView from "./utils/scrollIntoView";
-import { priceSlider,minProductPrice,maxProductPrice } from "./utils/priceSlider";
+import { minProductPrice,maxProductPrice, slidersCorelation } from "./utils/priceSlider";
+import { sortProducts } from "./utils/sortProducts";
+
+
+
+
+
+
+
+
 
 
 
@@ -32,6 +40,9 @@ const minPriceValueEl = document.querySelector(".min-price-value");
 const minPriceInputEl = document.querySelector(".min-price-input");
 const maxPriceValueEl = document.querySelector(".max-price-value");
 const maxPriceInputEl = document.querySelector(".max-price-input");
+const submitBtn = document.querySelector(".main-sort-submit");
+const dropDownEl = document.querySelector(".main-sort-dropdown")
+
 
 
 
@@ -46,6 +57,7 @@ function createNavMenu(arr) {
     const ulEl = document.querySelector(".header-menu");
     const liEl = document.createElement("li");
     liEl.addEventListener("click", (e) => {
+      areProductsFiltered = false;
       scrollIntoView();
       removeFilterList();
       removeProductGrid();
@@ -84,21 +96,22 @@ async function loadProducts(category) {
   for (let i = 0; i < endIndex; i++) {
     createProduct(i, arrOfAllProducts);
   }
-  createLoadMoreBtn(allProductsCount, arrOfAllProducts);
+  createLoadMoreBtn(arrOfAllProducts);
+  return arrOfAllProducts
 }
 
 // * < FUNCTION create product > * //
 function createProduct(i, arr) {
   //get product
+  // arr = sortProducts(arr,"price","ascending");
   const product = arr[i];
   loadedProducts++;
 
   //create wrapper for the product
   const el = document.createElement("div");
-  el.classList.add("hidden")
+  // el.classList.add("hidden")
   el.classList.add("product-wrapper");
   productGrid.append(el);
-
   //create elements for the product//
   const counter = document.querySelectorAll(".main-counter");
   counter[0].textContent = `Showing: ${loadedProducts} of ${arr.length}`;
@@ -162,7 +175,8 @@ function createProduct(i, arr) {
 }
 
 //* FUNCTION ADD LOAD MORE BTN TO UI *//
-function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
+function createLoadMoreBtn(arrOfAllProducts) {
+  const allProductsCount = arrOfAllProducts.length
   const loadMoreBtn = document.createElement("button");
   loadMoreBtn.classList.add("main-btn");
   loadMoreBtn.textContent = "Load More";
@@ -183,10 +197,11 @@ function createLoadMoreBtn(allProductsCount, arrOfAllProducts) {
     }
   });
 }
-
+let areProductsFiltered = false;
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
-  const productsArr = await fetchProducts(category);
+  let productsArr = await fetchProducts(category);
+  productsArr = sortProducts(productsArr,"price","ascending");
 
   let minPrice = minProductPrice(productsArr);
   let maxPrice = maxProductPrice(productsArr);
@@ -234,13 +249,16 @@ async function createFilterList(category) {
 
   // * < CREATE BUTTON TO SUBMIT FILTERING DATA > * //
   const filterBtn = document.createElement("button");
-  filterBtn.classList.add("main-filter-btn");
+  filterBtn.classList.add("main-filter-btn", "button");
   filterBtn.textContent = "Filter";
   filterEL.append(filterBtn);
 
-
+  let allFilteredProductsArr = [];
+  let cloneFilteredProductsArr = [];
   // * < FILTER BUTTON HANDLER > * //
   filterBtn.addEventListener("click", () => {
+    areProductsFiltered = true;
+     
     
     const brandCheckboxes = document.querySelectorAll(
       'input[name="filter-brand"]'
@@ -250,36 +268,55 @@ async function createFilterList(category) {
     const filteredBrandsArr = brandCheckboxesArr. // return array of the choosen brands ["nyx,"dior"...]
     filter((element) => element.checked).
     map((checkbox) => checkbox.value);
-    let allFilteredProductsArr = [];
+   
     let filteredByBrandArr = [];
     filteredBrandsArr.forEach((brand) => {        
       const brandArr = productsArr.filter((obj) => obj.brand === brand);
       filteredByBrandArr = filteredByBrandArr.concat(brandArr); // return array of objects(products) filtered by brand
     });
+    minPrice = minProductPrice(filteredByBrandArr);
+    maxPrice = maxProductPrice(filteredByBrandArr);
+    minPriceInputEl.value = minPrice;
+    minPriceValueEl.textContent = minPrice;
+    minPriceInputEl.setAttribute("min", minPrice);
+    minPriceInputEl.setAttribute("max", maxPrice);
+  
+  
+    maxPriceInputEl.value = maxPrice;
+    maxPriceValueEl.textContent = maxPrice;
+    maxPriceInputEl.setAttribute("min",minPrice);
+    maxPriceInputEl.setAttribute("max", maxPrice);
     console.log(productsArr)
     console.log(minPriceValueEl.value)
     console.log(maxPriceValueEl.value)
     console.log(filteredBrandsArr)
     console.log(filteredByBrandArr)
     if (filteredBrandsArr.length > 0) {
-      const productsByBrandAndPrice = filteredByBrandArr.filter((obj) => Number(obj.price) < maxPriceValueEl.value && Number(obj.price) > minPriceValueEl.value)
+      const productsByBrandAndPrice = filteredByBrandArr.filter((obj) => Number(obj.price) <= maxPriceValueEl.value && Number(obj.price) >= minPriceValueEl.value)
       allFilteredProductsArr = allFilteredProductsArr.concat(productsByBrandAndPrice);
       console.log(">")
       console.log(productsByBrandAndPrice)
     }
     
 
-   else if (filteredBrandsArr.length === 0){
-      const productsByPrice = productsArr.filter((obj) => Number(obj.price) < maxPriceValueEl.value && Number(obj.price) > minPriceValueEl.value)
+   else if (filteredBrandsArr.length === 0) {
+      const productsByPrice = productsArr.filter((obj) => Number(obj.price) <= maxPriceValueEl.value && Number(obj.price) >= minPriceValueEl.value)
       allFilteredProductsArr = allFilteredProductsArr.concat(productsByPrice);
       console.log("===")
-    
+      console.log(productsByPrice)
+      console.log(allFilteredProductsArr)
     }   
+   
+ 
 
+ 
+
+    const [criteria, order] = dropDownEl.value.split("-");
+    allFilteredProductsArr = sortProducts(allFilteredProductsArr,criteria,order);
     const allFilteredProductsCount = allFilteredProductsArr.length;
     loadedProducts = 0;
     removeProductGrid();
-    createLoadMoreBtn(allFilteredProductsCount, allFilteredProductsArr);
+    createLoadMoreBtn(allFilteredProductsArr);
     if (allFilteredProductsCount >= 20) {
       endIndex = 20;
     } else {
@@ -288,8 +325,48 @@ async function createFilterList(category) {
     for (let i = 0; i < endIndex; i++) {
       createProduct(i, allFilteredProductsArr);
     }
+    cloneFilteredProductsArr = [...allFilteredProductsArr];
     allFilteredProductsArr = [];
+  
   });
+  //
+
+     
+
+submitBtn.addEventListener("click", (e) =>{
+  e.preventDefault(); 
+  let sortedProductsArr = [];
+  console.log(loadedProducts)
+  loadedProducts = 0;
+  const [criteria, order] = dropDownEl.value.split("-");
+  console.log(criteria)
+  console.log(order)
+  if(areProductsFiltered) {
+    
+    sortedProductsArr = sortProducts(cloneFilteredProductsArr,criteria,order);
+  } else {
+   
+    
+    sortedProductsArr = sortProducts(productsArr,criteria,order);
+  }
+  
+  removeProductGrid()
+
+  console.log(sortedProductsArr)
+  if (sortedProductsArr.length >= 20) {
+    endIndex = 20;
+  } else {
+    endIndex = sortedProductsArr.length;
+  }
+  for (let i = 0; i < endIndex; i++) {
+    createProduct(i, sortedProductsArr);
+  }
+  createLoadMoreBtn(sortedProductsArr)
+  
+ 
+
+  console.log(sortedProductsArr)
+})
 
   const singleProductObj = productsArr[0];
   const productProperties = Object.keys(singleProductObj);
@@ -307,7 +384,7 @@ window.onload = function() {
   createNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
   slideFromLeftContinuously();
   mobileMenu();
-  priceSlider(minPriceValueEl, minPriceInputEl);
-  priceSlider(maxPriceValueEl, maxPriceInputEl);
+  slidersCorelation(minPriceInputEl,maxPriceInputEl,minPriceValueEl,maxPriceValueEl);
+  
 }
 

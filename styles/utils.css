@@ -10,6 +10,11 @@
     margin-top: 5rem;
 }
 
+input[type="range"] {
+    accent-color: var(--clr-pink400);
+  }
+
+
 /* CONTAINER */
 @media (min-width: 475px) {
     .container {

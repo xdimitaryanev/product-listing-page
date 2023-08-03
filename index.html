@@ -50,6 +50,19 @@
         <h1 class="main-category"></h1>
         <p id="products" class="main-category-description"></p>
       </div>
+      <div class="main-sort">
+        <form>
+          <label for="sort">Sort byr:</label>
+          <select name="sort" class="main-sort-dropdown">
+            <option value="price-ascending">Price Low to High</option>
+            <option value="price-descending">Price High to Low</option>
+            <option value="name-ascending">Alphabetical a-z</option>
+            <option value="name-descending">Alphabetical z-a</option>
+          </select>
+          <br><br>
+          <input class = "button main-sort-submit" type="submit" value="Submit">
+        </form>
+      </div>
       <div class="main-counter container"></div>
       <div class="main-products-wrapper container">
         <section class="main-filter">
