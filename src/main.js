@@ -40,8 +40,9 @@ const minPriceValueEl = document.querySelector(".min-price-value");
 const minPriceInputEl = document.querySelector(".min-price-input");
 const maxPriceValueEl = document.querySelector(".max-price-value");
 const maxPriceInputEl = document.querySelector(".max-price-input");
-const submitBtn = document.querySelector(".main-sort-submit");
+// const submitBtn = document.querySelector(".main-sort-submit");
 const dropDownEl = document.querySelector(".main-sort-dropdown")
+const counter = document.querySelectorAll(".main-counter");
 
 
 
@@ -85,8 +86,12 @@ function createNavMenu(arr) {
 
 // * < load products on page load > * //
 async function loadProducts(category) {
-  const arrOfAllProducts = await fetchProducts(category);
+  let arrOfAllProducts = await fetchProducts(category);
   const allProductsCount = arrOfAllProducts.length;
+  
+  const [criteria, order] = dropDownEl.value.split("-");
+  arrOfAllProducts = sortProducts(arrOfAllProducts,criteria,order)
+  console.log(criteria,order,arrOfAllProducts)
   categoryEl.textContent = category;
   if (allProductsCount >= 20) {
     endIndex = 20;
@@ -113,7 +118,7 @@ function createProduct(i, arr) {
   el.classList.add("product-wrapper");
   productGrid.append(el);
   //create elements for the product//
-  const counter = document.querySelectorAll(".main-counter");
+
   counter[0].textContent = `Showing: ${loadedProducts} of ${arr.length}`;
   counter[1].textContent = `Showing: ${loadedProducts} of ${arr.length}`;
 
@@ -201,18 +206,14 @@ let areProductsFiltered = false;
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
   let productsArr = await fetchProducts(category);
-  productsArr = sortProducts(productsArr,"price","ascending");
-
+console.log(productsArr)
   let minPrice = minProductPrice(productsArr);
   let maxPrice = maxProductPrice(productsArr);
-  console.log(maxPrice)
 
-  
   minPriceInputEl.value = minPrice;
   minPriceValueEl.textContent = minPrice;
   minPriceInputEl.setAttribute("min", minPrice);
   minPriceInputEl.setAttribute("max", maxPrice);
-
 
   maxPriceInputEl.value = maxPrice;
   maxPriceValueEl.textContent = maxPrice;
@@ -274,37 +275,28 @@ async function createFilterList(category) {
       const brandArr = productsArr.filter((obj) => obj.brand === brand);
       filteredByBrandArr = filteredByBrandArr.concat(brandArr); // return array of objects(products) filtered by brand
     });
-    minPrice = minProductPrice(filteredByBrandArr);
-    maxPrice = maxProductPrice(filteredByBrandArr);
-    minPriceInputEl.value = minPrice;
-    minPriceValueEl.textContent = minPrice;
-    minPriceInputEl.setAttribute("min", minPrice);
-    minPriceInputEl.setAttribute("max", maxPrice);
-  
-  
-    maxPriceInputEl.value = maxPrice;
-    maxPriceValueEl.textContent = maxPrice;
-    maxPriceInputEl.setAttribute("min",minPrice);
-    maxPriceInputEl.setAttribute("max", maxPrice);
-    console.log(productsArr)
-    console.log(minPriceValueEl.value)
-    console.log(maxPriceValueEl.value)
-    console.log(filteredBrandsArr)
-    console.log(filteredByBrandArr)
+
+    if(filteredBrandsArr) {
+
+
+    } else {
+
+
+
+    }
+
     if (filteredBrandsArr.length > 0) {
       const productsByBrandAndPrice = filteredByBrandArr.filter((obj) => Number(obj.price) <= maxPriceValueEl.value && Number(obj.price) >= minPriceValueEl.value)
       allFilteredProductsArr = allFilteredProductsArr.concat(productsByBrandAndPrice);
-      console.log(">")
-      console.log(productsByBrandAndPrice)
+
     }
     
 
    else if (filteredBrandsArr.length === 0) {
       const productsByPrice = productsArr.filter((obj) => Number(obj.price) <= maxPriceValueEl.value && Number(obj.price) >= minPriceValueEl.value)
       allFilteredProductsArr = allFilteredProductsArr.concat(productsByPrice);
+
       console.log("===")
-      console.log(productsByPrice)
-      console.log(allFilteredProductsArr)
     }   
    
  
@@ -314,6 +306,15 @@ async function createFilterList(category) {
     const [criteria, order] = dropDownEl.value.split("-");
     allFilteredProductsArr = sortProducts(allFilteredProductsArr,criteria,order);
     const allFilteredProductsCount = allFilteredProductsArr.length;
+    if(allFilteredProductsCount === 0) {
+      loadedProducts = 0;
+      counter[0].textContent = `Showing: ${loadedProducts} of ${allFilteredProductsCount}`;
+      counter[1].textContent = `Showing: ${loadedProducts} of ${allFilteredProductsCount}`;
+  
+      removeProductGrid();
+      return
+      
+    }
     loadedProducts = 0;
     removeProductGrid();
     createLoadMoreBtn(allFilteredProductsArr);
@@ -329,18 +330,12 @@ async function createFilterList(category) {
     allFilteredProductsArr = [];
   
   });
-  //
 
-     
-
-submitBtn.addEventListener("click", (e) =>{
+  dropDownEl.addEventListener("change", (e) =>{
   e.preventDefault(); 
   let sortedProductsArr = [];
-  console.log(loadedProducts)
   loadedProducts = 0;
   const [criteria, order] = dropDownEl.value.split("-");
-  console.log(criteria)
-  console.log(order)
   if(areProductsFiltered) {
     
     sortedProductsArr = sortProducts(cloneFilteredProductsArr,criteria,order);
@@ -349,10 +344,9 @@ submitBtn.addEventListener("click", (e) =>{
     
     sortedProductsArr = sortProducts(productsArr,criteria,order);
   }
-  
+
   removeProductGrid()
 
-  console.log(sortedProductsArr)
   if (sortedProductsArr.length >= 20) {
     endIndex = 20;
   } else {
@@ -362,10 +356,6 @@ submitBtn.addEventListener("click", (e) =>{
     createProduct(i, sortedProductsArr);
   }
   createLoadMoreBtn(sortedProductsArr)
-  
- 
-
-  console.log(sortedProductsArr)
 })
 
   const singleProductObj = productsArr[0];
