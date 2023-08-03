@@ -15,16 +15,6 @@ import scrollIntoView from "./utils/scrollIntoView";
 import { minProductPrice,maxProductPrice, slidersCorelation } from "./utils/priceSlider";
 import { sortProducts } from "./utils/sortProducts";
 
-
-
-
-
-
-
-
-
-
-
 // DECLARE VARIABLES //
 let startIndex = 0;
 let endIndex = 20;
@@ -40,11 +30,8 @@ const minPriceValueEl = document.querySelector(".min-price-value");
 const minPriceInputEl = document.querySelector(".min-price-input");
 const maxPriceValueEl = document.querySelector(".max-price-value");
 const maxPriceInputEl = document.querySelector(".max-price-input");
-// const submitBtn = document.querySelector(".main-sort-submit");
 const dropDownEl = document.querySelector(".main-sort-dropdown")
 const counter = document.querySelectorAll(".main-counter");
-
-
 
 
 //< * FUNCTION CREATE Navigation MENU * >//
@@ -108,7 +95,6 @@ async function loadProducts(category) {
 // * < FUNCTION create product > * //
 function createProduct(i, arr) {
   //get product
-  // arr = sortProducts(arr,"price","ascending");
   const product = arr[i];
   loadedProducts++;
 
@@ -150,7 +136,7 @@ function createProduct(i, arr) {
     const discountedPriceProduct = document.createElement("span");
     const discountedPriceProductValue =
       product.price - (product.discount * product.price) / 100;
-    discountedPriceProduct.textContent = `${discountedPriceProductValue}$`;
+    discountedPriceProduct.textContent = `${discountedPriceProductValue}${product.price_sign} ${product.currency}`;
     productPrice.classList.add("main-product-discounted");
     priceWrapper.append(productPrice, discountedPriceProduct);
   }
@@ -310,10 +296,8 @@ console.log(productsArr)
       loadedProducts = 0;
       counter[0].textContent = `Showing: ${loadedProducts} of ${allFilteredProductsCount}`;
       counter[1].textContent = `Showing: ${loadedProducts} of ${allFilteredProductsCount}`;
-  
       removeProductGrid();
-      return
-      
+      return;
     }
     loadedProducts = 0;
     removeProductGrid();
@@ -364,7 +348,6 @@ console.log(productsArr)
   filterCategory.textContent = `Choose from your favourite ${productProperties[1]}s`;
   filterDropDown();
   slideFromLeft();
-
 }
 
 window.onload = function() {
