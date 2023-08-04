@@ -16,6 +16,7 @@ input[type="range"] {
 
 
 /* CONTAINER */
+
 @media (min-width: 475px) {
     .container {
         max-width: 475px;

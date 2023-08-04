@@ -31,10 +31,8 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="header-x">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
-      
       <nav class="header-navbar">
         <ul class="header-menu">
-
         </ul>
       </nav>
       <div class="header-mobile-menu">
@@ -44,54 +42,53 @@
         </nav>
       </div>
     </header>
-
     <main class="main container">
       <div class="main-header-wrapper container">
         <h1 class="main-category"></h1>
-        <p id="products" class="main-category-description"></p>
+        <p class="main-category-description"></p>
       </div>
-      <div class="main-sort">
-        <form>
-          <label for="sort">Sort by:</label>
-          <select name="sort" class="main-sort-dropdown">
-            <option value="price-ascending">Price Low to High</option>
-            <option value="price-descending">Price High to Low</option>
-            <option value="name-ascending">Alphabetical a-z</option>
-            <option value="name-descending">Alphabetical z-a</option>
-          </select>
-        </form>
-      </div>
-      <div class="main-counter container"></div>
+      
+    
       <div class="main-products-wrapper container">
+        <div class="main-counter container"></div>
+        <div class="main-sort cont">
+          <form>
+            <label for="sort">Sort by:</label>
+            <select name="sort" class="main-sort-dropdown">
+              <option value="price-ascending">Price Low to High</option>
+              <option value="price-descending">Price High to Low</option>
+              <option value="name-ascending">Alphabetical a-z</option>
+              <option value="name-descending">Alphabetical z-a</option>
+            </select>
+          </form>
+        </div>
         <section class="main-filter">
           <h2 class="main-filter-heading">Filter </h2>
           <h3 class="main-filter-category"></h3>
             <ul class="main-filter-list">
-            </ul>
-               
-  <h3>Price Range:</h3>
-  <label>
-    Min Price: <input class="min-price-input" type="range" name="minPrice" step="0.1">
-    <span>
-      <output class="min-price-value"></output>
-    </span>
-  </label>
-  <label>
-    Max Price: <input class="max-price-input" type="range" name="maxPrice" step="0.1"> 
-    <span>
-      <output class="max-price-value"></output>
-    </span>
-  </label>
+            </ul> 
+  <h3 class="main-filter-category">Choose your Price:</h3>
+  <div class="main-slider-wrapper">
+    <label class="main-filter-pricelabel">
+      <h4>Min Price:</h4> <input class="min-price-input" type="range" name="minPrice" step="0.1">
+      
+        <output class="min-price-value"></output>
+   
+    </label>
+    <label class="main-filter-pricelabel">
+     <h4>Max Price:</h4>  <input class="max-price-input" type="range" name="maxPrice" step="0.1"> 
+      
+        <output class="max-price-value"></output>
+   
+    </label>
+  </div>
+  
         </section>
-    
         <section class="main-products"></section>
- 
         </div>
       <div class="main-btn-wrapper">
         <div class="container main-counter"></div>
-
       </div>
-    
     </main>
     <footer class="footer container"></footer>
     <script type="module" src="./src/main.js"></script>

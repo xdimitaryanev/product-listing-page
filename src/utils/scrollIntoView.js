@@ -1,5 +1,5 @@
 function scrollIntoView () {
-    const view = document.getElementById("products");
+    const view = document.querySelector(".main-products");
     view.scrollIntoView({ behavior: "smooth",inline: "end" });
   }
 

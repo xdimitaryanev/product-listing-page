@@ -1,5 +1,4 @@
 import { fetchCategoryDescriptions } from "../utils/fetchingData";
-// * < FUNCTION add Short Description for Selected Category > * //
 
 async function createCategoryDescriptions(category) {
   const descriptionsArr = await fetchCategoryDescriptions();
