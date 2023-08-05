@@ -347,7 +347,7 @@ async function createFilterList(category) {
   const singleProductObj = productsArr[0];
   const productProperties = Object.keys(singleProductObj);
   const filterCategory = document.querySelector(".main-filter-category");
-  filterCategory.textContent = `Choose from your favourite ${productProperties[1]}s`;
+  filterCategory.textContent = `Choose your ${productProperties[1]}s`;
   filterDropDown();
   slideFromLeft();
 }

@@ -471,12 +471,13 @@
         margin: 0.2em;
     }
     .main-slider-wrapper {
-        font-size: var(--size-xs);
+        font-size: var(--size-sm);
     }
     
     
     .main-filter-pricelabel h4 {
         margin-right: 0;
+        margin-left: 0em;
     }
     
     .main-filter-pricelabel output {
@@ -515,7 +516,6 @@
     }
     
     .main-price-wrapper {
-        font-family: Oswald,sans-serif;
         align-self: baseline;
     }
     
@@ -585,6 +585,7 @@
         max-width: 30ch;
         font-size: var(--size-base);
         overflow-x: hidden;
+        align-self: flex-end;
     }
     
     .main-price-wrapper {
@@ -608,13 +609,13 @@
         grid-row: 1/2;
         grid-column: 1/2;
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-120px);
         transform: all .3s ease;
       }
-      
+
       .product-wrapper:hover .main-add-to-cart-btn {
         opacity: 1;
-        transform: translateY(0px);
+        transform: translateY(-100px);
       }
     
       .product-wrapper:hover .main-img {
@@ -627,6 +628,23 @@
 
     .main-products-wrapper {    
         grid-template-columns: 300px 1fr;
+    }
+
+    .main-products {
+        grid-gap: 1em;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(auto-fit, 550px);
+        grid-auto-rows: 550px;
+        grid-auto-flow: row;
+        margin-bottom: 1em;
+    }
+
+    .main-product-name {
+        font-size: var(--size-xl);
+    }
+
+    .main-price-wrapper {
+        font-size: var(--size-lg);
     }
 
     
@@ -642,80 +660,105 @@
         margin: 0.5em;
     }    
     
-    .main-filter-pricelabel h4 {
-        margin-right: 0;
-    }
     
     .main-filter-pricelabel input {
-        margin-left: 1em;
         width: 9em;
     }
 
     .main-brand-list {
-        gap: 0.4em;
-        padding: 0.5em 0.5em;
-        font-size: var(--size-sm);
-    }
-
-    .main-filter-list {
-        gap: 0.4em;
+        gap: 0.5em;
+        padding: 0.1em 0.6em;
+        font-size: var(--size-base);
     }
     
     .main-products {
-        grid-gap: 1em;
         grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(auto-fit, 540px);
-        grid-auto-rows: 540px;
-        grid-auto-flow: row;
-        margin-bottom: 1em;
     }
     
     .main-product-description {
-        max-height: 80px;
+        max-height: 90px;
         align-self: baseline;  
-        max-width: 30ch;
-        font-size: var(--size-sm);
+        font-size: var(--size-base);
         overflow-x: hidden;
     }
     
-    .main-price-wrapper {
-        font-family: Oswald,sans-serif;
-        align-self: baseline;
-    }
-
     .main-slider-wrapper {
         font-size: var(--size-sm);
     }
-    
-    .main-img {
-        align-self: center;
-        width: auto;
-        grid-row: 1/2;
-        grid-column: 1/2;
-    }
 
-    .main-add-to-cart-btn {
-        align-self: self-end;
-        grid-row: 1/2;
-        grid-column: 1/2;
-        opacity: 0;
-        transform: translateY(-20px);
-        transform: all .3s ease;
-      }
-
-      .product-wrapper:hover .main-add-to-cart-btn {
-        opacity: 1;
-        transform: translateY(0px);
-      }
     
-      .product-wrapper:hover .main-img {
-            filter:blur(2px);
-        }
-        
-  
+    .main-filter-btn {
+        font-size: var(--size-lg);
+      }
+      
+      
   }
   
   @media (min-width: 1536px) {
+    
+    .main-products-wrapper {    
+        grid-template-columns: 330px 1fr;
+    }
+
+    .main-product-name {
+        font-size: var(--size-2xl);
+    }
+
+    .main-price-wrapper {
+        font-size: var(--size-xl);
+    }
+
+    
+    .main-category-description {
+        max-width: 125ch;
+    }
+    
+    .main-filter {
+        max-width: 330px;
+    }
+    
+    .main-filter-heading {
+        margin: 0.5em;
+    }    
+    
+    
+    .main-filter-pricelabel input {
+        width: 10em;
+    }
+
+    .main-brand-list {
+        padding: 0.2em 0.5em;
+        font-size: var(--size-lg);
+    }
+    
+    .main-products {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .main-product-description {
+        max-height: 100px;
+        align-self: baseline;  
+        font-size: var(--size-lg);
+        overflow-x: hidden;
+        max-width: 40ch;
+    }
+    
+    .main-slider-wrapper {
+        font-size: var(--size-sm);
+    }
+
+    .main-filter-btn {
+        font-size: var(--size-xl);
+      }
+      
   
   }
+
+  @media (min-width: 1920px) {
+
+
+    .main-category-description {
+        max-width: 155ch;
+    }
+}
 
