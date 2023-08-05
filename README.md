@@ -1,4 +1,4 @@
-Product Listing Page is a dynamic web application crafted using Vanilla JavaScript, HTML, CSS, and the Vite build tool. The project elegantly presents a comprehensive assortment of beauty products divided into four distinct categories. These categories are fetched from JSON files, ensuring users have seamless access to a wide variety of products. The application offers a user-friendly interface, filtering and sorting, all designed to enhance user experience.
+Product Listing Page is a dynamic web application crafted using Vanilla JavaScript, HTML, CSS, and the Vite build tool. The project presents assortment of beauty products divided into four distinct categories. These categories are fetched from JSON files, ensuring users have seamless access to a wide variety of products. The application offers a user-friendly interface, filtering and sorting, all designed to enhance user experience.
 There were several challenges encountered while building this app like UX and Data handling, but the most significant one was definitely the implementation of the filtering system.
 
 
