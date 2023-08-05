@@ -1,4 +1,131 @@
 .footer {
-    height: 5em;
+    display: flex;
+    height: 6em;
     background-color: var(--clr-dark);
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.footer-wrapper {
+    display: flex;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    font-family: Montserrat, sans-serif;
+    font-size: var(--size-xs);
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: var(--clr-gray400);
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--clr-pink400);
+}
+
+.footer-info p {
+    color: var(--clr-gray200);
+    font-family: Oswald,sans-serif;
+    font-size: var(--size-xs);
+}
+
+
+
+@media (min-width: 475px) {
+
+    .footer-wrapper {
+        gap: 3em;
+    }
+    
+    .footer-links {
+        font-size: var(--size-sm);
+    }
+    
+
+}
+
+@media (min-width: 640px) {
+    .footer-info p {
+        font-size: var(--size-sm);
+    }
+    
+
+}
+ 
+@media (min-width: 768px) {
+    .footer-wrapper {
+        gap: 5em;
+    }
+
+}
+
+@media (min-width: 1024px) {
+
+    .footer-wrapper {
+        gap: 6em;
+    }
+    
+    .footer-links {
+        font-size: var(--size-base);
+    }
+
+    .footer-info p {
+        font-size: var(--size-base);
+    }
+    
+
+}
+
+@media (min-width: 1280px) {
+
+}
+
+@media (min-width: 1536px) {
+    .footer {
+        display: flex;
+        height: 7em;
+        background-color: var(--clr-dark);
+        justify-content: center;
+        margin-top: 2em;
+    }
+    
+    .footer-wrapper {
+        display: flex;
+        gap: 8em;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        font-family: Montserrat, sans-serif;
+        font-size: var(--size-lg);
+    }
+    
+    .footer-links a {
+        text-decoration: none;
+        color: var(--clr-gray400);
+        transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+        color: var(--clr-pink400);
+    }
+    
+    .footer-info p {
+        color: var(--clr-gray200);
+        font-family: Oswald,sans-serif;
+        font-size: var(--size-base);
+    }
+    
 }

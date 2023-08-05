@@ -18,6 +18,7 @@ import {
   slidersCorelation,
 } from "./utils/priceSlider";
 import { sortProducts } from "./utils/sortProducts";
+import shortenDescription from "./utils/shortenDescriptions";
 
 // DECLARE VARIABLES //
 let startIndex = 0;
@@ -36,11 +37,12 @@ const maxPriceValueEl = document.querySelector(".max-price-value");
 const maxPriceInputEl = document.querySelector(".max-price-input");
 const dropDownEl = document.querySelector(".main-sort-dropdown");
 const counter = document.querySelectorAll(".main-counter");
+const mobileMenuList = document.querySelector(".header-mobile-menu-list");
+const ulEl = document.querySelector(".header-menu");
 
-//< * FUNCTION CREATE Navigation MENU * >//
+
+//< * FUNCTION CREATE Desktop Navigation MENU * >//
 function createNavMenu(arr) {
-  const mobileMenuList = document.querySelector(".header-mobile-menu-list");
-  const ulEl = document.querySelector(".header-menu");
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
     chosenCategoriesArr.push(arr[i]);
@@ -59,31 +61,41 @@ function createNavMenu(arr) {
     });
     liEl.textContent = arr[i];
     ulEl.append(liEl);
-    const mobileLi = document.createElement("li");
-    mobileLi.textContent = arr[i];
-    mobileLi.classList.add("hidden","header-mobile-menu");
-    mobileLi.addEventListener("click", (e) => {
-      areProductsFiltered = false;
-      scrollIntoView();
-      removeFilterList();
-      removeProductGrid();
-      loadedProducts = 0;
-      createCategoryDescriptions(e.target.innerText);
-      loadProducts(e.target.innerText);
-      createFilterList(e.target.innerText);
-    });
-    mobileMenuList.append(mobileLi);
+}}
+
+//< * FUNCTION CREATE Mobile Navigation MENU * >//
+function createMobileNav(arr) {
+  let chosenCategoriesArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    chosenCategoriesArr.push(arr[i]);
   }
+  for (let i = 0; i < chosenCategoriesArr.length; i++) {
+  const mobileLi = document.createElement("li");
+  mobileLi.textContent = arr[i];
+  mobileLi.classList.add("hidden","header-mobile-menu");
+  mobileLi.addEventListener("click", (e) => {
+    areProductsFiltered = false;
+    scrollIntoView();
+    removeFilterList();
+    removeProductGrid();
+    loadedProducts = 0;
+    createCategoryDescriptions(e.target.innerText);
+    loadProducts(e.target.innerText);
+    createFilterList(e.target.innerText);
+  });
+  mobileMenuList.append(mobileLi);
 }
+}
+
 
 // * < load products on page load > * //
 async function loadProducts(category) {
-  let arrOfAllProducts = await fetchProducts(category);
-  const allProductsCount = arrOfAllProducts.length;
+  let allProductsArr = await fetchProducts(category);
+  const allProductsCount = allProductsArr.length;
 
   const [criteria, order] = dropDownEl.value.split("-");
-  arrOfAllProducts = sortProducts(arrOfAllProducts, criteria, order);
-  console.log(criteria, order, arrOfAllProducts);
+  allProductsArr = sortProducts(allProductsArr, criteria, order);
+  console.log(criteria, order, allProductsArr);
   categoryEl.textContent = category;
   if (allProductsCount >= 20) {
     endIndex = 20;
@@ -92,10 +104,10 @@ async function loadProducts(category) {
   }
   for (let i = 0; i < endIndex; i++) {
     loadedProducts++;
-    createProduct(i, arrOfAllProducts);
+    createProduct(i, allProductsArr);
   }
-  createLoadMoreBtn(arrOfAllProducts);
-  return arrOfAllProducts;
+  createLoadMoreBtn(allProductsArr);
+  return allProductsArr;
 }
 
 // * < FUNCTION create product > * //
@@ -128,7 +140,7 @@ function createProduct(i, arr) {
   //description
   const productDescription = document.createElement("p");
   productDescription.classList.add("main-product-description");
-  productDescription.textContent = product.description;
+  productDescription.textContent = shortenDescription(product.description, 200);
 
   //price
   const priceWrapper = document.createElement("div");
@@ -149,6 +161,10 @@ function createProduct(i, arr) {
 
   //rating
   const productRating = document.createElement("span");
+  const ratingStarEl = document.createElement("img");
+  ratingStarEl.classList.add("rating-star-img")
+  ratingStarEl.src = "star.png"
+  
   if (product.rating === null) {
     productRating.textContent = `Rating: 0`;
   } else {
@@ -170,6 +186,8 @@ function createProduct(i, arr) {
     priceWrapper,
     productDescription
   );
+
+  productRating.appendChild(ratingStarEl);
 }
 
 //* FUNCTION ADD LOAD MORE BTN TO UI *//
@@ -179,11 +197,17 @@ function createLoadMoreBtn(arrOfAllProducts) {
   loadMoreBtn.classList.add("main-btn");
   loadMoreBtn.textContent = "Load More";
   btnWrapper.append(loadMoreBtn);
+
+  function updateLoadMoreBtn() {
+    if (allProductsCount === loadedProducts) {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.textContent = "All products loaded";
+    }
+  }
+
   loadMoreBtn.addEventListener("click", (e) => {
     if (allProductsCount - loadedProducts === 0) {
-      e.target.disabled = true;
-      e.target.color = "red";
-      e.target.textContent = "No more products to show!";
+      updateLoadMoreBtn(); 
       return;
     } else if (allProductsCount - loadedProducts < 20) {
       startIndex = loadedProducts;
@@ -196,9 +220,14 @@ function createLoadMoreBtn(arrOfAllProducts) {
       loadedProducts++;
       createProduct(i, arrOfAllProducts);
     }
+    updateLoadMoreBtn(); 
   });
+
+  updateLoadMoreBtn();
 }
+
 let areProductsFiltered = false;
+
 //* FUNCTION CREATE FILTER *//
 async function createFilterList(category) {
   let productsArr = await fetchProducts(category);
@@ -363,6 +392,7 @@ window.onload = function () {
   createCategoryDescriptions("LIPSTICK");
   createFilterList("LIPSTICK");
   createNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
+  createMobileNav(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
   slideFromLeftContinuously();
   mobileMenu();
   slidersCorelation(
