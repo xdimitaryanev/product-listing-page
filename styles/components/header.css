@@ -15,12 +15,14 @@
     display: block;
     width: 1.5em;
     z-index: 999;
+    opacity: 100;
     
 }
 
 .header-x {
     color: var(--clr-dark);
-    display: none;
+    display: block;
+    opacity: 100;
     width: 1.5em;
     z-index: 999;
 }
@@ -68,6 +70,7 @@
     width: 100%;
     padding-bottom: 5em;
   }
+
 
   .header-mobile-menu-list li {
     font-family: Prata,sans-serif;

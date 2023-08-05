@@ -4,6 +4,22 @@
     justify-content: space-between;
     align-items: center;
 }
+ 
+.main-btn {
+    font-family: Montserrat,sans-serif;
+    background-color: var(--clr-dark);
+    color: var(--clr-gray200);
+    cursor: pointer;
+    font-size: var(--size-sm);
+    font-weight: 700;
+    line-height: 2;
+    padding: 4px 10px 4px;
+    text-align: center;
+    width: var(--size-10xl);
+    margin-top: 0.4em;
+    margin-bottom: 0.5em;
+
+}
 
 .main-header-wrapper {
     margin-top: 2em;

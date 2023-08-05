@@ -61,8 +61,10 @@ function createNavMenu(arr) {
     ulEl.append(liEl);
     const mobileLi = document.createElement("li");
     mobileLi.textContent = arr[i];
-    mobileLi.classList.add("hidden");
+    mobileLi.classList.add("hidden","header-mobile-menu");
     mobileLi.addEventListener("click", (e) => {
+      areProductsFiltered = false;
+      scrollIntoView();
       removeFilterList();
       removeProductGrid();
       loadedProducts = 0;
@@ -157,7 +159,9 @@ function createProduct(i, arr) {
   const addToCart = document.createElement("button");
   addToCart.textContent = "add to basket";
   addToCart.classList.add("main-add-to-cart-btn");
-  addToCart.addEventListener("click", addToCart);
+  addToCart.addEventListener("click", ()=>{
+    alert("Successfully added to your basket!");
+  });
   el.append(addToCart);
   //add elements to the product wrapper
   el.append(
@@ -177,7 +181,9 @@ function createLoadMoreBtn(arrOfAllProducts) {
   btnWrapper.append(loadMoreBtn);
   loadMoreBtn.addEventListener("click", (e) => {
     if (allProductsCount - loadedProducts === 0) {
-      e.target.style.color = "red";
+      e.target.disabled = true;
+      e.target.color = "red";
+      e.target.textContent = "No more products to show!";
       return;
     } else if (allProductsCount - loadedProducts < 20) {
       startIndex = loadedProducts;
