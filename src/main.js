@@ -42,7 +42,7 @@ const ulEl = document.querySelector(".header-menu");
 
 
 //< * FUNCTION CREATE Desktop Navigation MENU * >//
-function createNavMenu(arr) {
+function createDesktopNavMenu(arr) {
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
     chosenCategoriesArr.push(arr[i]);
@@ -56,15 +56,15 @@ function createNavMenu(arr) {
       removeProductGrid();
       loadedProducts = 0;
       createCategoryDescriptions(e.target.innerText);
-      loadProducts(e.target.innerText);
-      createFilterList(e.target.innerText);
+      loadProductsByCategory(e.target.innerText);
+      createFilterListForCategory(e.target.innerText);
     });
     liEl.textContent = arr[i];
     ulEl.append(liEl);
 }}
 
 //< * FUNCTION CREATE Mobile Navigation MENU * >//
-function createMobileNav(arr) {
+function createMobileNavMenu(arr) {
   let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
     chosenCategoriesArr.push(arr[i]);
@@ -80,8 +80,8 @@ function createMobileNav(arr) {
     removeProductGrid();
     loadedProducts = 0;
     createCategoryDescriptions(e.target.innerText);
-    loadProducts(e.target.innerText);
-    createFilterList(e.target.innerText);
+    loadProductsByCategory(e.target.innerText);
+    createFilterListForCategory(e.target.innerText);
   });
   mobileMenuList.append(mobileLi);
 }
@@ -89,7 +89,7 @@ function createMobileNav(arr) {
 
 
 // * < load products on page load > * //
-async function loadProducts(category) {
+async function loadProductsByCategory(category) {
   let allProductsArr = await fetchProducts(category);
   const allProductsCount = allProductsArr.length;
 
@@ -104,14 +104,14 @@ async function loadProducts(category) {
   }
   for (let i = 0; i < endIndex; i++) {
     loadedProducts++;
-    createProduct(i, allProductsArr);
+    createProductElement(i, allProductsArr);
   }
   createLoadMoreBtn(allProductsArr);
   return allProductsArr;
 }
 
 // * < FUNCTION create product > * //
-function createProduct(i, arr) {
+function createProductElement(i, arr) {
   //get product
   const product = arr[i];
 
@@ -140,7 +140,7 @@ function createProduct(i, arr) {
   //description
   const productDescription = document.createElement("p");
   productDescription.classList.add("main-product-description");
-  productDescription.textContent = shortenDescription(product.description, 200);
+  productDescription.textContent = shortenDescription(product.description, 120);
 
   //price
   const priceWrapper = document.createElement("div");
@@ -218,7 +218,7 @@ function createLoadMoreBtn(arrOfAllProducts) {
     }
     for (let i = startIndex; i < endIndex; i++) {
       loadedProducts++;
-      createProduct(i, arrOfAllProducts);
+      createProductElement(i, arrOfAllProducts);
     }
     updateLoadMoreBtn(); 
   });
@@ -229,7 +229,7 @@ function createLoadMoreBtn(arrOfAllProducts) {
 let areProductsFiltered = false;
 
 //* FUNCTION CREATE FILTER *//
-async function createFilterList(category) {
+async function createFilterListForCategory(category) {
   let productsArr = await fetchProducts(category);
   console.log(productsArr);
   let minPrice = minProductPrice(productsArr);
@@ -344,7 +344,7 @@ async function createFilterList(category) {
     }
     for (let i = 0; i < endIndex; i++) {
       loadedProducts++;
-      createProduct(i, allFilteredProductsArr);
+      createProductElement(i, allFilteredProductsArr);
     }
     cloneFilteredProductsArr = [...allFilteredProductsArr];
     allFilteredProductsArr = [];
@@ -374,7 +374,7 @@ async function createFilterList(category) {
     }
     for (let i = 0; i < endIndex; i++) {
       loadedProducts++;
-      createProduct(i, sortedProductsArr);
+      createProductElement(i, sortedProductsArr);
     }
     createLoadMoreBtn(sortedProductsArr);
   });
@@ -388,11 +388,11 @@ async function createFilterList(category) {
 }
 
 window.onload = function () {
-  loadProducts("LIPSTICK");
+  loadProductsByCategory("LIPSTICK");
   createCategoryDescriptions("LIPSTICK");
-  createFilterList("LIPSTICK");
-  createNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
-  createMobileNav(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
+  createFilterListForCategory("LIPSTICK");
+  createDesktopNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
+  createMobileNavMenu(["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]);
   slideFromLeftContinuously();
   mobileMenu();
   slidersCorelation(
