@@ -42,12 +42,8 @@ const ulEl = document.querySelector(".header-menu");
 
 
 //< * FUNCTION CREATE Desktop Navigation MENU * >//
-function createDesktopNavMenu(arr) {
-  let chosenCategoriesArr = [];
+function createDesktopNavMenu(arr) {   //takes arr of strings ["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]
   for (let i = 0; i < arr.length; i++) {
-    chosenCategoriesArr.push(arr[i]);
-  }
-  for (let i = 0; i < chosenCategoriesArr.length; i++) {
     const liEl = document.createElement("li");
     liEl.addEventListener("click", (e) => {
       areProductsFiltered = false;
@@ -65,11 +61,7 @@ function createDesktopNavMenu(arr) {
 
 //< * FUNCTION CREATE Mobile Navigation MENU * >//
 function createMobileNavMenu(arr) {
-  let chosenCategoriesArr = [];
   for (let i = 0; i < arr.length; i++) {
-    chosenCategoriesArr.push(arr[i]);
-  }
-  for (let i = 0; i < chosenCategoriesArr.length; i++) {
   const mobileLi = document.createElement("li");
   mobileLi.textContent = arr[i];
   mobileLi.classList.add("hidden","header-mobile-menu");
@@ -90,6 +82,7 @@ function createMobileNavMenu(arr) {
 
 // * < load products on page load > * //
 async function loadProductsByCategory(category) {
+ 
   let allProductsArr = await fetchProducts(category);
   const allProductsCount = allProductsArr.length;
 
@@ -112,13 +105,13 @@ async function loadProductsByCategory(category) {
 
 // * < FUNCTION create product > * //
 function createProductElement(i, arr) {
-  //get product
+  //get products
   const product = arr[i];
 
   //create wrapper for the product
   const el = document.createElement("div");
-  // el.classList.add("hidden")
   el.classList.add("product-wrapper");
+  el.classList.add("blur");
   productGrid.append(el);
   //create elements for the product//
 
@@ -188,6 +181,7 @@ function createProductElement(i, arr) {
   );
 
   productRating.appendChild(ratingStarEl);
+ 
 }
 
 //* FUNCTION ADD LOAD MORE BTN TO UI *//
@@ -205,7 +199,7 @@ function createLoadMoreBtn(arrOfAllProducts) {
     }
   }
 
-  loadMoreBtn.addEventListener("click", (e) => {
+  loadMoreBtn.addEventListener("click", () => {
     if (allProductsCount - loadedProducts === 0) {
       updateLoadMoreBtn(); 
       return;
@@ -219,10 +213,11 @@ function createLoadMoreBtn(arrOfAllProducts) {
     for (let i = startIndex; i < endIndex; i++) {
       loadedProducts++;
       createProductElement(i, arrOfAllProducts);
+
+     
     }
     updateLoadMoreBtn(); 
   });
-
   updateLoadMoreBtn();
 }
 

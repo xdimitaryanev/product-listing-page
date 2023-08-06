@@ -75,6 +75,13 @@ button {
   cursor: pointer;
 }
 
+.divider {
+  margin-top: var(--size-2xl);
+  margin-bottom: var(--size-5xl);
+  border: 1px solid var(--clr-dark);
+  width: 50%;  
+  opacity: 10%;
+  }
 
 /* font-family: 'Montserrat', sans-serif;
 font-family: 'Oswald', sans-serif;

@@ -65,7 +65,7 @@
     background-color: var(--clr-pink400);
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100%;
     width: 100%;
     padding-bottom: 5em;
@@ -74,7 +74,7 @@
 
   .header-mobile-menu-list li {
     font-family: Prata,sans-serif;
-    font-size: var(--size-5xl);
+    font-size: var(--size-3xl);
     letter-spacing: 0.15em;
     cursor: pointer;
     line-height: 1.4em;
@@ -86,15 +86,15 @@
     opacity: 0;
     filter: blur(15px);
     transition: all .4s ease;
-    transform: translateX(-20px);
+    transform: translateX(-10px);
 
 }
+
 .show {
     opacity: 100;
     filter: blur(0px);  
     transform: translateX(-0px);
 }
-
 
 
 
