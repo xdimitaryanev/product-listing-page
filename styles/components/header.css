@@ -141,18 +141,12 @@
     .header-menu li {
         font-size: var(--size-base);
     }
-
 }
 
 @media (min-width: 1280px) {
     .header-menu {
         gap: 3em;
     }
-
-    .header-menu li {
-        font-size: var(--size-lg);
-    }
-
 }
 
 @media (min-width: 1536px) {
