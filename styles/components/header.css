@@ -65,10 +65,10 @@
     background-color: var(--clr-pink400);
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     height: 100%;
     width: 100%;
-    padding-bottom: 5em;
+    padding: 0 0;
   }
 
 
@@ -100,9 +100,19 @@
 
 @media (min-width: 475px) {
 
+    .header-mobile-menu-list li {
+        font-size: var(--size-4xl);
+        line-height: 1.5em;
+      }
+    
+
 }
 
 @media (min-width: 640px) {
+    .header-mobile-menu-list li {
+        font-size: var(--size-5xl);
+        line-height: 1.5em;
+      }
 
 }
  

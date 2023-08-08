@@ -24,6 +24,7 @@ import shortenDescription from "./utils/shortenDescriptions";
 let startIndex = 0;
 let endIndex = 20;
 let loadedProducts = 0;
+let areProductsFiltered = false;
 
 // DECLARE ELEMENTS //
 const btnWrapper = document.querySelector(".main-btn-wrapper");
@@ -60,7 +61,7 @@ function createDesktopNavMenu(arr) {   //takes arr of strings ["EYELINER", "LIPL
 }}
 
 //< * FUNCTION CREATE Mobile Navigation MENU * >//
-function createMobileNavMenu(arr) {
+function createMobileNavMenu(arr) {   //takes arr of strings ["EYELINER", "LIPLINER", "LIPSTICK", "MASCARA"]
   for (let i = 0; i < arr.length; i++) {
   const mobileLi = document.createElement("li");
   mobileLi.textContent = arr[i];
@@ -88,8 +89,8 @@ async function loadProductsByCategory(category) {
 
   const [criteria, order] = dropDownEl.value.split("-");
   allProductsArr = sortProducts(allProductsArr, criteria, order);
-  console.log(criteria, order, allProductsArr);
   categoryEl.textContent = category;
+
   if (allProductsCount >= 20) {
     endIndex = 20;
   } else {
@@ -221,12 +222,11 @@ function createLoadMoreBtn(arrOfAllProducts) {
   updateLoadMoreBtn();
 }
 
-let areProductsFiltered = false;
+
 
 //* FUNCTION CREATE FILTER *//
 async function createFilterListForCategory(category) {
   let productsArr = await fetchProducts(category);
-  console.log(productsArr);
   let minPrice = minProductPrice(productsArr);
   let maxPrice = maxProductPrice(productsArr);
 
@@ -311,8 +311,6 @@ async function createFilterListForCategory(category) {
           Number(obj.price) >= minPriceValueEl.value
       );
       allFilteredProductsArr = allFilteredProductsArr.concat(productsByPrice);
-
-      console.log("===");
     }
 
     const [criteria, order] = dropDownEl.value.split("-");
