@@ -1,7 +1,10 @@
+
+
+
 //* FUNCTION fetch category description *//
 export async function fetchCategoryDescriptions() {
   try {
-    const response = await fetch(`data/descriptions.json`);
+    const response = await fetch(`./DESCRIPTIONS.json`);
     return await response.json();
   } catch (err) {
     console.log("Error fetching categories", err);
@@ -13,7 +16,7 @@ export async function fetchCategoryDescriptions() {
 //* FUNCTION fetch products *//
 export async function fetchProducts(category) {
     try {
-      const response = await fetch(`data/${category}.json`);
+      const response = await fetch(`./${category}.json`);
       return await response.json();
     } catch (err) {
       console.error("Error fetching products:", err);
